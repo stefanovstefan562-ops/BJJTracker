@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Practitioner>
+<table>
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Academy</th>
+            <th>CurrentBelt</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var practitioner in Model)
+        {
+            <tr>
+                <td>@practitioner.FirstName</td>
+                <td>@practitioner.LastName</td>
+                <td>@practitioner.Academy</td>
+                <td>@practitioner.CurrentBelt</td>
+            </tr>
+        }
+    </tbody>
+</table>
