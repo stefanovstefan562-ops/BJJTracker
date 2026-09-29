@@ -1,0 +1,19 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using MyMvcApp.Models;
+
+namespace MyMvcApp.Data
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        
+        public DbSet<Practitioner> Practitioners { get; set; }
+        public DbSet<TrainingSession> TrainingSessions { get; set; }
+        public DbSet<Technique> Techniques { get; set; }
+        public DbSet<SparringSession> SparringSessions { get; set; }
+    
+    
+    }
+}
+
