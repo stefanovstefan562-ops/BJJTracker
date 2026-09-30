@@ -13,6 +13,20 @@ namespace MyMvcApp.Controllers
             _context = context;
         }
 
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Practitioner practitioner)
+        {
+            _context.Practitioners.Add(practitioner);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Index()
         {
             var practitioners = _context.Practitioners.ToList();
