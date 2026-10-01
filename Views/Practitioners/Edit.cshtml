@@ -1,11 +1,12 @@
 ﻿@using MyMvcApp.Models.Enums
-@model Practitioner
+@model Practitioner 
 
-<form asp-action="Create" method="post">
+<form asp-action="Edit" method="post">
+<input type="hidden" asp-for="Id" />
 	<input asp-for="FirstName" />
 	<input asp-for="LastName" />
 	<input asp-for="Academy" />
 	<select asp-for="CurrentBelt" class="form-control" asp-items="Html.GetEnumSelectList<BeltRank>()">
 	</select>
-<button type="submit">Save</button>
+	<button type="submit">Save</button>
 </form>

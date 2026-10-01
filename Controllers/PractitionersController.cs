@@ -27,6 +27,20 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Edit(int id)
+        {
+            var practition = _context.Practitioners.Find(id);
+            return View(practition);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Practitioner practitioner)
+        {
+            _context.Practitioners.Update(practitioner);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
         public IActionResult Index()
         {
             var practitioners = _context.Practitioners.ToList();
