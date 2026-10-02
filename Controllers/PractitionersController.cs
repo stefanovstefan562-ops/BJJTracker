@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
-
 namespace MyMvcApp.Controllers
 {
     public class PractitionersController : Controller
@@ -39,6 +38,15 @@ namespace MyMvcApp.Controllers
             _context.Practitioners.Update(practitioner);
             _context.SaveChanges();
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var practition = _context.Practitioners.Find(id);
+            _context.Practitioners.Remove(practition);
+            _context.SaveChanges();
             return RedirectToAction("Index");
         }
         public IActionResult Index()

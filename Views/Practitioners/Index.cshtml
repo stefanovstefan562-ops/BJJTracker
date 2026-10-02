@@ -6,6 +6,7 @@
             <th>LastName</th>
             <th>Academy</th>
             <th>CurrentBelt</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,12 @@
                 <td>@practitioner.LastName</td>
                 <td>@practitioner.Academy</td>
                 <td>@practitioner.CurrentBelt</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@practitioner.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@practitioner.Id" method="post" style="display:inline">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
