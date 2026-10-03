@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Technique>
+
+<table>
+	<thead>
+		<tr>
+			<th>TechniqueName</th>
+			<th>TechniquePosition</th>
+			<th>TechniqueDescription</th>
+			<th>TechniqueVideo</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var technique in Model)
+		{
+			<tr>
+				<td>@technique.TechniqueName</td>
+				<td>@technique.TechniquePosition</td>
+				<td>@technique.TechniqueDescription</td>
+				<td>@technique.TechniqueVideo</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@technique.Id">Edit</a>
+					<form asp-action="Delete" asp-route-id="@technique.Id" method="post" style="display:inline">
+						<button type="submit">Delete</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

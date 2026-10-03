@@ -1,0 +1,12 @@
+﻿@using MyMvcApp.Models.Enums
+@model Technique
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input asp-for="TechniqueName" />
+    <input asp-for="TechniqueVideo" />
+    <textarea asp-for="TechniqueDescription"></textarea>
+    <select asp-for="TechniquePosition" class="form-control" asp-items="Html.GetEnumSelectList<TechniquePosition>()">
+    </select>
+    <button type="submit">Save</button>
+</form>
