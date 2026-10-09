@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyMvcApp.Controllers
 {
@@ -54,7 +55,7 @@ namespace MyMvcApp.Controllers
 
         public IActionResult Index()
         {
-            var trainingSessions = _context.TrainingSessions.ToList();
+            var trainingSessions = _context.TrainingSessions.Include(t => t.Academy).ToList();
             return View(trainingSessions);
         }
 

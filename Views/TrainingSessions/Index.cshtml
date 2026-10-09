@@ -2,6 +2,7 @@
 <table>
 	<thead>
 		<tr>
+			<th>Academy</th>
 			<th>DateOfTheTraining</th>
 			<th>DurationOfTheTraining</th>
 			<th>StartTime</th>
@@ -13,6 +14,7 @@
 		@foreach (var trainingSession in Model)
 		{
 			<tr>
+				<td>@trainingSession.Academy?.AcademyName</td>
 				<td>@trainingSession.DateOfTheTraining</td>
 				<td>@trainingSession.DurationOfTheTraining</td>
 				<td>@trainingSession.StartTime</td>
