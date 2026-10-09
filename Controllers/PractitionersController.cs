@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
 namespace MyMvcApp.Controllers
@@ -54,7 +55,7 @@ namespace MyMvcApp.Controllers
         }
         public IActionResult Index()
         {
-            var practitioners = _context.Practitioners.ToList();
+            var practitioners = _context.Practitioners.Include(p => p.Academy).ToList();
 
             return View(practitioners);
         }
