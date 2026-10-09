@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TrainingSession>
+<table>
+	<thead>
+		<tr>
+			<th>DateOfTheTraining</th>
+			<th>DurationOfTheTraining</th>
+			<th>StartTime</th>
+			<th>TrainingType</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var trainingSession in Model)
+		{
+			<tr>
+				<td>@trainingSession.DateOfTheTraining</td>
+				<td>@trainingSession.DurationOfTheTraining</td>
+				<td>@trainingSession.StartTime</td>
+				<td>@trainingSession.TrainingType</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@trainingSession.Id">Edit</a>
+					<a asp-controller="Attendances" asp-action="Create" asp-route-trainingSessionId="@trainingSession.Id">Add Attendance</a>
+					<form asp-action="Delete" asp-route-id="@trainingSession.Id" method="post" style="display:inline">
+						<button type="submit">Delete</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

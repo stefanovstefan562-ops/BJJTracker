@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Attendance>
+
+<table>
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>DateOfTheTraining</th>
+            <th>StartTime</th>
+            <th>DurationOfTheTraining</th>
+            <th>TrainingType</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var attendance in Model)
+        {
+            <tr>
+                <td>@attendance.Practitioner?.FirstName</td>
+                <td>@attendance.TrainingSession?.DateOfTheTraining</td>
+                <td>@attendance.TrainingSession?.StartTime</td>
+                <td>@attendance.TrainingSession?.DurationOfTheTraining</td>
+                <td>@attendance.TrainingSession?.TrainingType</td>
+            </tr>
+        }
+    </tbody>
+</table>

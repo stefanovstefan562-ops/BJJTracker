@@ -6,9 +6,10 @@ namespace MyMvcApp.Models
     {
         public int Id { get; set; }
         public DateOnly DateOfTheTraining { get; set; }
+        public TimeOnly StartTime { get; set; }
         public TimeSpan DurationOfTheTraining { get; set; }
         public TypeOfTheTraining TrainingType { get; set; }
-        public int PractitionerId { get; set; }
-        public Practitioner? Practitioner { get; set; }
+        public int AcademyId { get; set; }
+
     }
 }

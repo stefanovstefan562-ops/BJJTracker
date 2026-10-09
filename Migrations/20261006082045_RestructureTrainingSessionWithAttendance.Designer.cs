@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyMvcApp.Data;
 
@@ -11,9 +12,11 @@ using MyMvcApp.Data;
 namespace MyMvcApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261006082045_RestructureTrainingSessionWithAttendance")]
+    partial class RestructureTrainingSessionWithAttendance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,29 +24,6 @@ namespace MyMvcApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MyMvcApp.Models.Academy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AcademyAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AcademyDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AcademyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Academies");
-                });
 
             modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>
                 {
@@ -76,8 +56,8 @@ namespace MyMvcApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AcademyId")
-                        .HasColumnType("int");
+                    b.Property<string>("Academy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("CurrentBelt")
                         .HasColumnType("int");
@@ -91,8 +71,6 @@ namespace MyMvcApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AcademyId");
 
                     b.ToTable("Practitioners");
                 });
@@ -161,14 +139,14 @@ namespace MyMvcApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AcademyId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("DateOfTheTraining")
                         .HasColumnType("date");
 
                     b.Property<TimeSpan>("DurationOfTheTraining")
                         .HasColumnType("time");
+
+                    b.Property<int?>("PractitionerId")
+                        .HasColumnType("int");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
@@ -178,7 +156,7 @@ namespace MyMvcApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AcademyId");
+                    b.HasIndex("PractitionerId");
 
                     b.ToTable("TrainingSessions");
                 });
@@ -202,15 +180,6 @@ namespace MyMvcApp.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
-                {
-                    b.HasOne("MyMvcApp.Models.Academy", "Academy")
-                        .WithMany()
-                        .HasForeignKey("AcademyId");
-
-                    b.Navigation("Academy");
-                });
-
             modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
                 {
                     b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
@@ -224,14 +193,12 @@ namespace MyMvcApp.Migrations
 
             modelBuilder.Entity("MyMvcApp.Models.TrainingSession", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Academy", null)
+                    b.HasOne("MyMvcApp.Models.Practitioner", null)
                         .WithMany("TrainingSessions")
-                        .HasForeignKey("AcademyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PractitionerId");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Academy", b =>
+            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
                 {
                     b.Navigation("TrainingSessions");
                 });

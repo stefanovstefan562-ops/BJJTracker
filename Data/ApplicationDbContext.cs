@@ -12,8 +12,8 @@ namespace MyMvcApp.Data
         public DbSet<TrainingSession> TrainingSessions { get; set; }
         public DbSet<Technique> Techniques { get; set; }
         public DbSet<SparringSession> SparringSessions { get; set; }
-    
-    
+        public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<Academy> Academies { get; set; }
     }
 }
 

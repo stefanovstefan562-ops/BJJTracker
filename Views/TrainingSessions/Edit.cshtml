@@ -1,0 +1,12 @@
+﻿@using MyMvcApp.Models.Enums
+@model TrainingSession
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input asp-for="DateOfTheTraining" type="date" />
+    <input asp-for="StartTime" type="time" />
+    <textarea asp-for="DurationOfTheTraining"></textarea>
+    <select asp-for="TrainingType" class="form-control" asp-items="Html.GetEnumSelectList<TypeOfTheTraining>()">
+    </select>
+    <button type="submit">Save</button>
+</form>

@@ -1,0 +1,9 @@
+﻿@model Attendance
+
+<form asp-action="Create" method="post">
+	<input type="hidden" asp-for="TrainingSessionId" />
+	<select asp-for="PractitionerId"
+	asp-items="@(new SelectList(ViewBag.Practitioners, "Id", "FirstName"))">
+</select>
+	<button type="submit">Save</button>
+</form>
