@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Academy>
+<a asp-action="Create">Create New Academy</a>
+<table>
+    <thead>
+        <tr>
+            <th>AcademyName</th>
+            <th>AcademyAddress</th>
+            <th>AcademyDescription</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var academy in Model)
+        {
+            <tr>
+                <td>@academy.AcademyName</td>
+                <td>@academy.AcademyAddress</td>
+                <td>@academy.AcademyDescription</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@academy.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@academy.Id" method="post" style="display:inline">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
