@@ -1,0 +1,12 @@
+﻿@model Academy
+
+<form asp-action="Edit" method="post">
+	<input type="hidden" asp-for="Id" />
+	<label asp-for="AcademyName"></label>
+	<input asp-for="AcademyName" />
+	<label asp-for="AcademyAddress"></label>
+	<input asp-for="AcademyAddress" />
+	<label asp-for="AcademyDescription"></label>
+	<input asp-for="AcademyDescription" />
+	<button type="submit">Save</button>
+</form>
