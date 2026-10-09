@@ -3,9 +3,14 @@
 
 <form asp-action="Edit" method="post">
 <input type="hidden" asp-for="Id" />
+	<label asp-for="FirstName"></label>
 	<input asp-for="FirstName" />
+	<label asp-for="LastName"></label>
 	<input asp-for="LastName" />
-	<input asp-for="Academy" />
+	<label asp-for="AcademyId"></label>
+	<select asp-for="AcademyId" asp-items="@(new SelectList(ViewBag.Academy, "Id", "AcademyName"))">
+		<option value="">No Academy</option></select>
+	<label asp-for="CurrentBelt"></label>
 	<select asp-for="CurrentBelt" class="form-control" asp-items="Html.GetEnumSelectList<BeltRank>()">
 	</select>
 	<button type="submit">Save</button>

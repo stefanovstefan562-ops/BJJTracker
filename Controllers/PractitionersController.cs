@@ -14,6 +14,8 @@ namespace MyMvcApp.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.Academy = _context.Academies.ToList();
+
             return View();
         }
 
@@ -29,6 +31,7 @@ namespace MyMvcApp.Controllers
         public IActionResult Edit(int id)
         {
             var practition = _context.Practitioners.Find(id);
+            ViewBag.Academy = _context.Academies.ToList();
             return View(practition);
         }
 
