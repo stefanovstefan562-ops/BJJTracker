@@ -2,6 +2,7 @@
 @model TrainingSession
 
 <form asp-action="Create" method="post">
+	<input type="hidden" asp-for="AcademyId" />
 	<input asp-for="DateOfTheTraining" type="date" />
 	<input asp-for="StartTime" type="time"  />
 	<input asp-for="DurationOfTheTraining" />

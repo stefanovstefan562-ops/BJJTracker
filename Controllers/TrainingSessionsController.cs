@@ -13,9 +13,11 @@ namespace MyMvcApp.Controllers
             _context = context;
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int academyId)
         {
-            return View();
+            var trainingSession = new TrainingSession { AcademyId = academyId };
+
+            return View(trainingSession);
         }
 
         [HttpPost]

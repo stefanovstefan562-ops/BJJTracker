@@ -18,6 +18,8 @@
                 <td>@academy.AcademyDescription</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@academy.Id">Edit</a>
+                    <a asp-controller="TrainingSessions" asp-action="Create"
+                    asp-route-academyId="@academy.Id">Add Training Session</a>
                     <form asp-action="Delete" asp-route-id="@academy.Id" method="post" style="display:inline">
                         <button type="submit">Delete</button>
                     </form>
