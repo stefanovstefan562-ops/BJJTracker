@@ -4,9 +4,13 @@
 	<input type="hidden" asp-for="Id" />
 	<label asp-for="AcademyName"></label>
 	<input asp-for="AcademyName" />
+	<span asp-validation-for="AcademyName" class="text-danger"></span>
 	<label asp-for="AcademyAddress"></label>
 	<input asp-for="AcademyAddress" />
 	<label asp-for="AcademyDescription"></label>
 	<input asp-for="AcademyDescription" />
 	<button type="submit">Save</button>
 </form>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

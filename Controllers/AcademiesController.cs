@@ -19,6 +19,10 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Create(Academy academy)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(academy);
+            }
             _context.Academies.Add(academy);
             _context.SaveChanges();
 
@@ -32,6 +36,11 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Edit(Academy academy)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(academy);
+            }
+
             _context.Academies.Update(academy);
             _context.SaveChanges();
 
