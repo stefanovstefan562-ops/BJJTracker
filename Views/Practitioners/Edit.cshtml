@@ -5,8 +5,10 @@
 <input type="hidden" asp-for="Id" />
 	<label asp-for="FirstName"></label>
 	<input asp-for="FirstName" />
+	<span asp-validation-for="FirstName" class="text-danger"></span>
 	<label asp-for="LastName"></label>
 	<input asp-for="LastName" />
+	<span asp-validation-for="LastName" class="text-danger"></span>
 	<label asp-for="AcademyId"></label>
 	<select asp-for="AcademyId" asp-items="@(new SelectList(ViewBag.Academy, "Id", "AcademyName"))">
 		<option value="">No Academy</option></select>
@@ -15,3 +17,6 @@
 	</select>
 	<button type="submit">Save</button>
 </form>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

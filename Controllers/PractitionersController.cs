@@ -23,6 +23,11 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Create(Practitioner practitioner)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Academy = _context.Academies.ToList();
+                return View(practitioner);
+            }
             _context.Practitioners.Add(practitioner);
             _context.SaveChanges();
 
@@ -39,6 +44,11 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Edit(Practitioner practitioner)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Academy = _context.Academies.ToList();
+                return View(practitioner);
+            }
             _context.Practitioners.Update(practitioner);
             _context.SaveChanges();
 
