@@ -2,11 +2,18 @@
 @model TrainingSession
 
 <form asp-action="Create" method="post">
+	<div asp-validation-summary="All" class="text-danger"></div>
 	<input type="hidden" asp-for="AcademyId" />
 	<input asp-for="DateOfTheTraining" type="date" />
+	<span asp-validation-for="DateOfTheTraining" class="text-danger"></span>
 	<input asp-for="StartTime" type="time"  />
+	<span asp-validation-for="StartTime" class="text-danger"></span>
 	<input asp-for="DurationOfTheTraining" />
+	<span asp-validation-for="DurationOfTheTraining" class="text-danger"></span>
 	<select asp-for="TrainingType" class="form-control" asp-items="Html.GetEnumSelectList<TypeOfTheTraining>()">
 	</select>
 	<button type="submit">Save</button>
 </form>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
