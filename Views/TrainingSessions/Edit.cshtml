@@ -3,10 +3,17 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="AcademyId" />
     <input asp-for="DateOfTheTraining" type="date" />
+    <span asp-validation-for="DateOfTheTraining" class="text-danger"></span>
     <input asp-for="StartTime" type="time" />
-    <textarea asp-for="DurationOfTheTraining"></textarea>
+    <span asp-validation-for="StartTime" class="text-danger"></span>
+    <input asp-for="DurationOfTheTraining" />
+    <span asp-validation-for="DurationOfTheTraining" class="text-danger"></span> 
     <select asp-for="TrainingType" class="form-control" asp-items="Html.GetEnumSelectList<TypeOfTheTraining>()">
     </select>
     <button type="submit">Save</button>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
