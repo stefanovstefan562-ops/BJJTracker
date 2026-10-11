@@ -1,5 +1,6 @@
 ﻿using MyMvcApp.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using MyMvcApp.Validation;
 
 namespace MyMvcApp.Models
 {
@@ -9,6 +10,7 @@ namespace MyMvcApp.Models
         public DateOnly DateOfTheTraining { get; set; }
         public TimeOnly StartTime { get; set; }
         [Required(ErrorMessage = "Need the duration time!")]
+        [DurationRange]
         public TimeSpan DurationOfTheTraining { get; set; }
         public TypeOfTheTraining TrainingType { get; set; }
         public int AcademyId { get; set; }
