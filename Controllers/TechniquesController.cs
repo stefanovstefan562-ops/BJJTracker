@@ -21,6 +21,11 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Create(Technique technique)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(technique);
+            }
+
             _context.Techniques.Add(technique);
             _context.SaveChanges();
 
@@ -36,6 +41,11 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Edit(Technique technique)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(technique);
+            }
+
             _context.Techniques.Update(technique);
             _context.SaveChanges();
 

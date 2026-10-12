@@ -143,7 +143,8 @@ namespace MyMvcApp.Migrations
 
                     b.Property<string>("TechniqueName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("TechniquePosition")
                         .HasColumnType("int");
