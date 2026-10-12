@@ -3,10 +3,21 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
+    <label asp-for="TechniqueName"></label>
     <input asp-for="TechniqueName" />
+    <span asp-validation-for="TechniqueName" class="text-danger"></span>
+    <label asp-for="TechniqueVideo"></label>
     <input asp-for="TechniqueVideo" />
+    <span asp-validation-for="TechniqueVideo" class="text-danger"></span>
+    <label asp-for="TechniqueDescription"></label>
     <textarea asp-for="TechniqueDescription"></textarea>
+    <span asp-validation-for="TechniqueDescription" class="text-danger"></span>
+    <label asp-for="TechniquePosition"></label>
     <select asp-for="TechniquePosition" class="form-control" asp-items="Html.GetEnumSelectList<TechniquePosition>()">
     </select>
+    <span asp-validation-for="TechniquePosition" class="text-danger"></span>
     <button type="submit">Save</button>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
