@@ -2,8 +2,13 @@
 
 <form asp-action="Create" method="post">
 	<input type="hidden" asp-for="TrainingSessionId" />
+	<label asp-for="PractitionerId"></label>
 	<select asp-for="PractitionerId"
 	asp-items="@(new SelectList(ViewBag.Practitioners, "Id", "FirstName"))">
 </select>
+	<span asp-validation-for="PractitionerId" class="text-danger"></span>
 	<button type="submit">Save</button>
 </form>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}
