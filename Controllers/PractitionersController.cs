@@ -1,21 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyMvcApp.Data;
 using MyMvcApp.Models;
+using MyMvcApp.Services;
 namespace MyMvcApp.Controllers
 {
     public class PractitionersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPractitionerService _practitionerService;
 
-        public PractitionersController(ApplicationDbContext context)
+        private readonly IAcademyService _academyService;
+
+        public PractitionersController(IPractitionerService practitionerService, IAcademyService academyService)
         {
-            _context = context;
+            _practitionerService = practitionerService;
+
+            _academyService = academyService;
         }
 
         public IActionResult Create()
         {
-            ViewBag.Academy = _context.Academies.ToList();
+            ViewBag.Academy = _academyService.GetAll();
 
             return View();
         }
@@ -25,19 +28,19 @@ namespace MyMvcApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Academy = _context.Academies.ToList();
+                ViewBag.Academy = _academyService.GetAll();
                 return View(practitioner);
             }
-            _context.Practitioners.Add(practitioner);
-            _context.SaveChanges();
+
+            _practitionerService.Create(practitioner);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            var practition = _context.Practitioners.Find(id);
-            ViewBag.Academy = _context.Academies.ToList();
+            var practition = _practitionerService.GetById(id);
+            ViewBag.Academy = _academyService.GetAll();
             return View(practition);
         }
 
@@ -46,11 +49,10 @@ namespace MyMvcApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Academy = _context.Academies.ToList();
+                ViewBag.Academy = _academyService.GetAll();
                 return View(practitioner);
             }
-            _context.Practitioners.Update(practitioner);
-            _context.SaveChanges();
+            _practitionerService.Update(practitioner);
 
             return RedirectToAction("Index");
         }
@@ -58,14 +60,13 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var practition = _context.Practitioners.Find(id);
-            _context.Practitioners.Remove(practition);
-            _context.SaveChanges();
+            _practitionerService.Delete(id);
+
             return RedirectToAction("Index");
         }
         public IActionResult Index()
         {
-            var practitioners = _context.Practitioners.Include(p => p.Academy).ToList();
+            var practitioners = _practitionerService.GetAll();
 
             return View(practitioners);
         }
