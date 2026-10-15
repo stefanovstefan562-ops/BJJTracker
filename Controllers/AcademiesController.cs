@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyMvcApp.Models;
+using MyMvcApp.Services;
 
 namespace MyMvcApp.Controllers
 {
     public class AcademiesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAcademyService _academyService;
 
-        public AcademiesController(ApplicationDbContext context)
+        public AcademiesController(IAcademyService academyService)
         {
-            _context = context;
+            _academyService = academyService;
         }
+
         public IActionResult Create()
         {
             return View();
@@ -23,14 +25,14 @@ namespace MyMvcApp.Controllers
             {
                 return View(academy);
             }
-            _context.Academies.Add(academy);
-            _context.SaveChanges();
+
+            _academyService.Create(academy);
 
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int id)
         {
-            var academy = _context.Academies.Find(id);
+            var academy = _academyService.GetById(id);
             return View(academy);
         }
         [HttpPost]
@@ -41,22 +43,20 @@ namespace MyMvcApp.Controllers
                 return View(academy);
             }
 
-            _context.Academies.Update(academy);
-            _context.SaveChanges();
+            _academyService.Update(academy);
 
             return RedirectToAction("Index");
         }
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var academy = _context.Academies.Find(id);
-            _context.Academies.Remove(academy);
-            _context.SaveChanges();
+            _academyService.Delete(id);
+
             return RedirectToAction("Index");
         }
         public IActionResult Index()
         {
-            var academies = _context.Academies.ToList();
+            var academies = _academyService.GetAll();
 
             return View(academies);
         }
