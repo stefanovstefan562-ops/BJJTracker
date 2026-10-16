@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace MyMvcApp.Data
 {
@@ -7,8 +8,16 @@ namespace MyMvcApp.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddUserSecrets<ApplicationDbContextFactory>()
+                .Build();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer("Server=localhost,1433;Database=BjjTrackerDb;User Id=sa;Password=Ste5971114fan;TrustServerCertificate=True;");
+            builder.UseSqlServer(connectionString);
 
             return new ApplicationDbContext(builder.Options);
         }
