@@ -1,23 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Data;
 using MyMvcApp.Models;
-using Microsoft.EntityFrameworkCore;
+using MyMvcApp.Services;
 
 namespace MyMvcApp.Controllers
 {
     public class AttendancesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public AttendancesController(ApplicationDbContext context)
+        private readonly IAttendanceService _attendanceService;
+
+        private readonly ITrainingSessionService _trainingSessionService;
+
+        private readonly IPractitionerService _practitionerService;
+        public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService, IPractitionerService practitionerService)
         {
-            _context = context;
+            _attendanceService = attendanceService;
+
+            _trainingSessionService = trainingSessionService;
+
+            _practitionerService = practitionerService;
         }
         public IActionResult Create(int trainingSessionId)
         {
             var attendance = new Attendance { TrainingSessionId = trainingSessionId };
-            ViewBag.Practitioners = _context.Practitioners.ToList();
+            ViewBag.Practitioners = _practitionerService.GetAll();
 
-            if (!_context.TrainingSessions.Any(t => t.Id == trainingSessionId))
+            if (_trainingSessionService.GetById(trainingSessionId) == null)
             {
                 return RedirectToAction("Index", "TrainingSessions");
             }
@@ -27,30 +34,25 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Create(Attendance attendance)
         {
-            if (_context.Attendances.Any(a => a.TrainingSessionId == attendance.TrainingSessionId
-                               && a.PractitionerId == attendance.PractitionerId))
+            if (_attendanceService.Exists(attendance.TrainingSessionId, attendance.PractitionerId))
             {
                 ModelState.AddModelError(nameof(Attendance.PractitionerId),
                     "This practitioner is already registered for this training session.");
             }
             if (!ModelState.IsValid)
             {
-                ViewBag.Practitioners = _context.Practitioners.ToList();
+                ViewBag.Practitioners = _practitionerService.GetAll();
                 return View(attendance);
             }
 
-            _context.Attendances.Add(attendance);
-            _context.SaveChanges();
+            _attendanceService.Create(attendance);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Index()
         {
-            var attendances = _context.Attendances
-            .Include(a => a.Practitioner)
-            .Include(a => a.TrainingSession)
-            .ToList();
+            var attendances = _attendanceService.GetAll();
 
             return View(attendances);
         }
