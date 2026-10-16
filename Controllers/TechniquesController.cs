@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Data;
 using MyMvcApp.Models;
+using MyMvcApp.Services;
 
 namespace MyMvcApp.Controllers
 {
     public class TechniquesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITechniqueService _techniqueService;
 
-        public TechniquesController(ApplicationDbContext context)
+        public TechniquesController(ITechniqueService techniqueService)
         {
-            _context = context;
+            _techniqueService = techniqueService;
         }
 
         public IActionResult Create()
@@ -26,16 +26,15 @@ namespace MyMvcApp.Controllers
                 return View(technique);
             }
 
-            _context.Techniques.Add(technique);
-            _context.SaveChanges();
+            _techniqueService.Create(technique);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            var technique = _context.Techniques.Find(id);
-            return View(technique);
+            var practition = _techniqueService.GetById(id);
+            return View(practition);
         }
 
         [HttpPost]
@@ -45,9 +44,7 @@ namespace MyMvcApp.Controllers
             {
                 return View(technique);
             }
-
-            _context.Techniques.Update(technique);
-            _context.SaveChanges();
+            _techniqueService.Update(technique);
 
             return RedirectToAction("Index");
         }
@@ -55,15 +52,14 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var technique = _context.Techniques.Find(id);
-            _context.Techniques.Remove(technique);
-            _context.SaveChanges();
+            _techniqueService.Delete(id);
+
             return RedirectToAction("Index");
         }
 
         public IActionResult Index()
         {
-            var technique = _context.Techniques.ToList();
+            var technique = _techniqueService.GetAll();
 
             return View(technique);
         }
