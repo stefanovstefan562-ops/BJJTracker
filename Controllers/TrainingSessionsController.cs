@@ -1,23 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
+using MyMvcApp.Services;
 
 namespace MyMvcApp.Controllers
 {
     public class TrainingSessionsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITrainingSessionService _trainingSessionService;
 
-        public TrainingSessionsController(ApplicationDbContext context)
+        private readonly IAcademyService _academyService;
+
+        public TrainingSessionsController(ITrainingSessionService trainingSessionService, IAcademyService academyService)
         {
-            _context = context;
+            _trainingSessionService = trainingSessionService;
+
+            _academyService = academyService;
         }
 
         public IActionResult Create(int academyId)
         {
-            if (!_context.Academies.Any(a => a.Id == academyId))
+            if (_academyService.GetById(academyId) == null)
             {
                 return RedirectToAction("Index", "Academies");
             }
@@ -54,15 +57,14 @@ namespace MyMvcApp.Controllers
                     return View(trainingSession);
                 }
 
-            _context.TrainingSessions.Add(trainingSession);
-            _context.SaveChanges();
+            _trainingSessionService.Create(trainingSession);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            var trainingSession = _context.TrainingSessions.Find(id);
+            var trainingSession = _trainingSessionService.GetById(id);
             return View(trainingSession);
         }
 
@@ -74,23 +76,22 @@ namespace MyMvcApp.Controllers
                 return View(trainingSession);
             }
 
-            _context.TrainingSessions.Update(trainingSession);
-            _context.SaveChanges();
+            _trainingSessionService.Update(trainingSession);
+            
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var trainingSession = _context.TrainingSessions.Find(id);
-            _context.TrainingSessions.Remove(trainingSession);
-            _context.SaveChanges();
+            _trainingSessionService.Delete(id);
+
             return RedirectToAction("Index");
         }
 
         public IActionResult Index()
         {
-            var trainingSessions = _context.TrainingSessions.Include(t => t.Academy).ToList();
+            var trainingSessions = _trainingSessionService.GetAll();
             return View(trainingSessions);
         }
 

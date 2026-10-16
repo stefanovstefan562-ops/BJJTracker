@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IAcademyService, AcademyService>();
 builder.Services.AddScoped<IPractitionerService, PractitionerService>();
 builder.Services.AddScoped<ITechniqueService, TechniqueService>();
+builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
+
 
 
 var app = builder.Build();
