@@ -1,16 +1,37 @@
 ﻿@model Academy
+@{
+	ViewData["Title"] = "Edit Academy";
+}
 
-<form asp-action="Edit" method="post">
-	<input type="hidden" asp-for="Id" />
-	<label asp-for="AcademyName"></label>
-	<input asp-for="AcademyName" />
-	<span asp-validation-for="AcademyName" class="text-danger"></span>
-	<label asp-for="AcademyAddress"></label>
-	<input asp-for="AcademyAddress" />
-	<label asp-for="AcademyDescription"></label>
-	<input asp-for="AcademyDescription" />
-	<button type="submit">Save</button>
-</form>
+<h1 class="mb-4">Edit Academy</h1>
+
+<div class="col-md-6">
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+
+		<div class="mb-3">
+			<label asp-for="AcademyName" class="form-label"></label>
+			<input asp-for="AcademyName" class="form-control" />
+			<span asp-validation-for="AcademyName" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="AcademyAddress" class="form-label"></label>
+			<input asp-for="AcademyAddress" class="form-control" />
+			<span asp-validation-for="AcademyAddress" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="AcademyDescription" class="form-label"></label>
+			<textarea asp-for="AcademyDescription" class="form-control" rows="3"></textarea>
+			<span asp-validation-for="AcademyDescription" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 }
