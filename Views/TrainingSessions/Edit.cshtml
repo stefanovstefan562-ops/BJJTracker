@@ -1,19 +1,46 @@
 ﻿@using MyMvcApp.Models.Enums
 @model TrainingSession
+@{
+	ViewData["Title"] = "Edit Training Session";
+}
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="AcademyId" />
-    <input asp-for="DateOfTheTraining" type="date" />
-    <span asp-validation-for="DateOfTheTraining" class="text-danger"></span>
-    <input asp-for="StartTime" type="time" />
-    <span asp-validation-for="StartTime" class="text-danger"></span>
-    <input asp-for="DurationOfTheTraining" />
-    <span asp-validation-for="DurationOfTheTraining" class="text-danger"></span> 
-    <select asp-for="TrainingType" class="form-control" asp-items="Html.GetEnumSelectList<TypeOfTheTraining>()">
-    </select>
-    <button type="submit">Save</button>
-</form>
+<h1 class="mb-4">Edit Training Session</h1>
+
+<div class="col-md-6">
+	<form asp-action="Edit" method="post">
+		<div asp-validation-summary="All" class="text-danger"></div>
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="AcademyId" />
+
+		<div class="mb-3">
+			<label asp-for="DateOfTheTraining" class="form-label"></label>
+			<input asp-for="DateOfTheTraining" type="date" class="form-control" />
+			<span asp-validation-for="DateOfTheTraining" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="StartTime" class="form-label"></label>
+			<input asp-for="StartTime" type="time" class="form-control" />
+			<span asp-validation-for="StartTime" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="DurationOfTheTraining" class="form-label"></label>
+			<input asp-for="DurationOfTheTraining" class="form-control" />
+			<span asp-validation-for="DurationOfTheTraining" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="TrainingType" class="form-label"></label>
+			<select asp-for="TrainingType" class="form-select" asp-items="Html.GetEnumSelectList<TypeOfTheTraining>()"></select>
+			<span asp-validation-for="TrainingType" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }

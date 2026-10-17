@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Data;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
 
@@ -28,34 +27,17 @@ namespace MyMvcApp.Controllers
             var trainingSession = new TrainingSession { AcademyId = academyId };
 
             return View(trainingSession);
-
-
         }
 
         [HttpPost]
         public IActionResult Create(TrainingSession trainingSession)
         {
-            var today = DateOnly.FromDateTime(DateTime.Today);
-
-            if (trainingSession.DateOfTheTraining < today)
-            {
-
-                ModelState.AddModelError(nameof(TrainingSession.DateOfTheTraining),
-                    "The training date cannot be in the past.");
-            }
-
-            var startsAt = trainingSession.DateOfTheTraining.ToDateTime(trainingSession.StartTime);
-
-            if (startsAt < DateTime.Now)
-            {
-                ModelState.AddModelError(nameof(TrainingSession.StartTime),
-                    "The training start time cannot be in the past.");
-            }
+            ValidateTrainingDateTime(trainingSession);
 
             if (!ModelState.IsValid)
-                {
-                    return View(trainingSession);
-                }
+            {
+                return View(trainingSession);
+            }
 
             _trainingSessionService.Create(trainingSession);
 
@@ -71,13 +53,34 @@ namespace MyMvcApp.Controllers
         [HttpPost]
         public IActionResult Edit(TrainingSession trainingSession)
         {
+            var existing = _trainingSessionService.GetById(trainingSession.Id);
+
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            bool scheduleChanged =
+                existing.DateOfTheTraining != trainingSession.DateOfTheTraining ||
+                existing.StartTime != trainingSession.StartTime;
+
+            if (scheduleChanged)
+            {
+                ValidateTrainingDateTime(trainingSession);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(trainingSession);
             }
 
-            _trainingSessionService.Update(trainingSession);
-            
+            existing.DateOfTheTraining = trainingSession.DateOfTheTraining;
+            existing.StartTime = trainingSession.StartTime;
+            existing.DurationOfTheTraining = trainingSession.DurationOfTheTraining;
+            existing.TrainingType = trainingSession.TrainingType;
+
+            _trainingSessionService.Update(existing);
+
             return RedirectToAction("Index");
         }
 
@@ -95,6 +98,23 @@ namespace MyMvcApp.Controllers
             return View(trainingSessions);
         }
 
+        private void ValidateTrainingDateTime(TrainingSession trainingSession)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
 
+            if (trainingSession.DateOfTheTraining < today)
+            {
+                ModelState.AddModelError(nameof(TrainingSession.DateOfTheTraining),
+                    "The training date cannot be in the past.");
+            }
+
+            var startsAt = trainingSession.DateOfTheTraining.ToDateTime(trainingSession.StartTime);
+
+            if (startsAt < DateTime.Now)
+            {
+                ModelState.AddModelError(nameof(TrainingSession.StartTime),
+                    "The training start time cannot be in the past.");
+            }
+        }
     }
 }
