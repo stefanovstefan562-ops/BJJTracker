@@ -1,23 +1,40 @@
 ﻿@using MyMvcApp.Models.Enums
 @model Technique
-
+@{
+	ViewData["Title"] = "Edit Technique";
+}
+<div class="col-md-6">
+<h1 class="mb-4">Edit Technique</h1>
 <form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <label asp-for="TechniqueName"></label>
-    <input asp-for="TechniqueName" />
-    <span asp-validation-for="TechniqueName" class="text-danger"></span>
-    <label asp-for="TechniqueVideo"></label>
-    <input asp-for="TechniqueVideo" />
-    <span asp-validation-for="TechniqueVideo" class="text-danger"></span>
-    <label asp-for="TechniqueDescription"></label>
-    <textarea asp-for="TechniqueDescription"></textarea>
-    <span asp-validation-for="TechniqueDescription" class="text-danger"></span>
-    <label asp-for="TechniquePosition"></label>
-    <select asp-for="TechniquePosition" class="form-control" asp-items="Html.GetEnumSelectList<TechniquePosition>()">
-    </select>
-    <span asp-validation-for="TechniquePosition" class="text-danger"></span>
-    <button type="submit">Save</button>
-</form>
+	<input type="hidden" asp-for="Id" />
+	<div class="mb-3">
+		<label asp-for="TechniqueName" class="form-label"></label>
+		<input asp-for="TechniqueName" class="form-control" />
+		<span asp-validation-for="TechniqueName" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="TechniqueVideo" class="form-label"></label>
+		<input asp-for="TechniqueVideo" class="form-control" />
+		<span asp-validation-for="TechniqueVideo" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="TechniqueDescription" class="form-label"></label>
+		<textarea asp-for="TechniqueDescription" class="form-control"></textarea>
+		<span asp-validation-for="TechniqueDescription" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label asp-for="TechniquePosition" class="form-label"></label>
+		<select asp-for="TechniquePosition" class="form-select" asp-items="Html.GetEnumSelectList<TechniquePosition>()"></select>
+		<span asp-validation-for="TechniquePosition" class="text-danger"></span>
+	</div>
+
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }
