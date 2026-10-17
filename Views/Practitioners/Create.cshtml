@@ -1,22 +1,44 @@
 ﻿@using MyMvcApp.Models.Enums
 @model Practitioner
+@{
+	ViewData["Title"] = "Create Practitioner";
+}
 
-<form asp-action="Create" method="post">
-	<label asp-for="FirstName"></label>
-	<input asp-for="FirstName" />
-	<span asp-validation-for="FirstName" class="text-danger"></span>
-	<label asp-for="LastName"></label>
-	<input asp-for="LastName" />
-	<span asp-validation-for="LastName" class="text-danger"></span>
-	<label asp-for="AcademyId"></label>
-	<select asp-for="AcademyId" asp-items="@(new SelectList(ViewBag.Academy, "Id", "AcademyName"))">
-		<option value="">No Academy</option>
-	</select>
-	<label asp-for="CurrentBelt"></label>
-	<select asp-for="CurrentBelt" class="form-control" asp-items="Html.GetEnumSelectList<BeltRank>()">
-	</select>
-<button type="submit">Save</button>
-</form>
+<h1 class="mb-4">Create Practitioner</h1>
+
+<div class="col-md-6">
+	<form asp-action="Create" method="post">
+		<div class="mb-3">
+			<label asp-for="FirstName" class="form-label"></label>
+			<input asp-for="FirstName" class="form-control" />
+			<span asp-validation-for="FirstName" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="LastName" class="form-label"></label>
+			<input asp-for="LastName" class="form-control" />
+			<span asp-validation-for="LastName" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="AcademyId" class="form-label"></label>
+			<select asp-for="AcademyId" class="form-select" asp-items="@(new SelectList(ViewBag.Academy, "Id", "AcademyName"))">
+				<option value="">No Academy</option>
+			</select>
+			<span asp-validation-for="AcademyId" class="text-danger"></span>
+		</div>
+
+		<div class="mb-3">
+			<label asp-for="CurrentBelt" class="form-label"></label>
+			<select asp-for="CurrentBelt" class="form-select" asp-items="Html.GetEnumSelectList<BeltRank>()"></select>
+			<span asp-validation-for="CurrentBelt" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Save</button>
+		<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />
 }
