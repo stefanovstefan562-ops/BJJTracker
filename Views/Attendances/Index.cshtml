@@ -1,9 +1,12 @@
 ﻿@model IEnumerable<Attendance>
-
-<table>
+@{
+    ViewData["Title"] = "Attendances";
+}
+<h1 class="mb-4">Attendances</h1>
+<table class="table table-striped table-hover align-middle">
     <thead>
         <tr>
-            <th>FirstName</th>
+            <th>Practitioner</th>
             <th>DateOfTheTraining</th>
             <th>StartTime</th>
             <th>DurationOfTheTraining</th>
@@ -14,7 +17,7 @@
         @foreach (var attendance in Model)
         {
             <tr>
-                <td>@attendance.Practitioner?.FirstName</td>
+                <td>@attendance.Practitioner?.FirstName @attendance.Practitioner?.LastName</td>
                 <td>@attendance.TrainingSession?.DateOfTheTraining</td>
                 <td>@attendance.TrainingSession?.StartTime</td>
                 <td>@attendance.TrainingSession?.DurationOfTheTraining</td>
