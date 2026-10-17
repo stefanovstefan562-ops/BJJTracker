@@ -24,9 +24,20 @@ namespace MyMvcApp.Services
             return _context.Attendances.Any(a => a.TrainingSessionId == trainingSessionId && a.PractitionerId == practitionerId);
         }
 
-        public List<Attendance> GetAll()
+        public List<Attendance> GetAll(int? academyId = null)
         {
-            return _context.Attendances.Include(p => p.Practitioner).Include(s => s.TrainingSession).ToList();
+            var query = _context.Attendances
+                .Include(a => a.Practitioner)
+                .Include(a => a.TrainingSession)
+                    .ThenInclude(t => t.Academy)
+                .AsQueryable();
+
+            if (academyId != null)
+            {
+                query = query.Where(a => a.TrainingSession.AcademyId == academyId);
+            }
+
+            return query.ToList();
         }
     }
 }

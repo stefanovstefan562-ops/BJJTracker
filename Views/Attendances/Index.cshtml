@@ -2,10 +2,21 @@
 @{
     ViewData["Title"] = "Attendances";
 }
-<h1 class="mb-4">Attendances</h1>
+
+@if (ViewBag.AcademyName != null)
+{
+    <h1 class="mb-3">Attendances - @ViewBag.AcademyName</h1>
+    <a asp-action="Index" asp-route-academyId="" class="btn btn-secondary mb-3">Show all attendances</a>
+}
+else
+{
+    <h1 class="mb-4">Attendances</h1>
+}
+
 <table class="table table-striped table-hover align-middle">
     <thead>
         <tr>
+            <th>Academy</th>
             <th>Practitioner</th>
             <th>DateOfTheTraining</th>
             <th>StartTime</th>
@@ -17,6 +28,7 @@
         @foreach (var attendance in Model)
         {
             <tr>
+                <td>@attendance.TrainingSession?.Academy?.AcademyName</td>
                 <td>@attendance.Practitioner?.FirstName @attendance.Practitioner?.LastName</td>
                 <td>@attendance.TrainingSession?.DateOfTheTraining</td>
                 <td>@attendance.TrainingSession?.StartTime</td>

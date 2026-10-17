@@ -23,6 +23,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@academy.Id" class="btn btn-sm btn-outline-primary">Edit</a>
                     <a asp-controller="TrainingSessions" asp-action="Create" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-success">Add Training Session</a>
+                    <a asp-controller="Attendances" asp-action="Index" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-info">Attendances</a>
                     <form asp-action="Delete" asp-route-id="@academy.Id" method="post" class="d-inline">
                         <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                     </form>

@@ -11,13 +11,15 @@ namespace MyMvcApp.Controllers
         private readonly ITrainingSessionService _trainingSessionService;
 
         private readonly IPractitionerService _practitionerService;
-        public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService, IPractitionerService practitionerService)
+
+        private readonly IAcademyService _academyService;
+
+        public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService, IPractitionerService practitionerService, IAcademyService academyService)
         {
             _attendanceService = attendanceService;
-
             _trainingSessionService = trainingSessionService;
-
             _practitionerService = practitionerService;
+            _academyService = academyService;
         }
         public IActionResult Create(int trainingSessionId)
         {
@@ -50,9 +52,21 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? academyId)
         {
-            var attendances = _attendanceService.GetAll();
+            if (academyId != null)
+            {
+                var academy = _academyService.GetById(academyId.Value);
+
+                if (academy == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.AcademyName = academy.AcademyName;
+            }
+
+            var attendances = _attendanceService.GetAll(academyId);
 
             return View(attendances);
         }
