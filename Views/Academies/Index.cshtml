@@ -1,6 +1,10 @@
 ﻿@model IEnumerable<Academy>
-<a asp-action="Create">Create New Academy</a>
-<table>
+@{
+    ViewData["Title"] = "Academies";
+}
+<h1 class="mb-4">Academies</h1>
+<a asp-action="Create" class="btn btn-primary mb-3">Create New Academy</a>
+<table class="table table-striped table-hover align-middle">
     <thead>
         <tr>
             <th>AcademyName</th>
@@ -17,11 +21,10 @@
                 <td>@academy.AcademyAddress</td>
                 <td>@academy.AcademyDescription</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@academy.Id">Edit</a>
-                    <a asp-controller="TrainingSessions" asp-action="Create"
-                    asp-route-academyId="@academy.Id">Add Training Session</a>
-                    <form asp-action="Delete" asp-route-id="@academy.Id" method="post" style="display:inline">
-                        <button type="submit">Delete</button>
+                    <a asp-action="Edit" asp-route-id="@academy.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-controller="TrainingSessions" asp-action="Create" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-success">Add Training Session</a>
+                    <form asp-action="Delete" asp-route-id="@academy.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                     </form>
                 </td>
             </tr>
