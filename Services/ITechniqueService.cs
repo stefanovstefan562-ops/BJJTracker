@@ -4,10 +4,10 @@ namespace MyMvcApp.Services
 {
     public interface ITechniqueService
     {
-        List<Technique> GetAll();
-        Technique? GetById(int id);
-        void Create(Technique technique);
-        void Update(Technique technique);
-        void Delete(int id);
+        Task<List<Technique>> GetAllAsync();
+        Task<Technique?> GetByIdAsync(int id);
+        Task CreateAsync(Technique technique);
+        Task UpdateAsync(Technique technique);
+        Task DeleteAsync(int id);
     }
 }

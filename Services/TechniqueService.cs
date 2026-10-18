@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using MyMvcApp.Data;
 using MyMvcApp.Models;
 
@@ -8,41 +9,41 @@ namespace MyMvcApp.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public TechniqueService (ApplicationDbContext context)
+        public TechniqueService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public void Create(Technique technique)
+        public async Task<Technique?> GetByIdAsync(int id)
         {
-            _context.Techniques.Add(technique);
-            _context.SaveChanges();
+            return await _context.Techniques.FindAsync(id);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var technique = _context.Techniques.Find(id);
+            var technique = await _context.Techniques.FindAsync(id);
 
             if (technique == null)
-            { return; }
+            {
+                return;
+            }
+
             _context.Techniques.Remove(technique);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-
-        public List<Technique> GetAll()
-        {
-            return _context.Techniques.ToList();
-        }
-
-        public Technique? GetById(int id)
-        {
-            return _context.Techniques.Find(id);
-        }
-
-        public void Update(Technique technique)
+        public async Task UpdateAsync(Technique technique)
         {
             _context.Techniques.Update(technique);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Technique>> GetAllAsync()
+        {
+            return await _context.Techniques.ToListAsync();
+        }
+        public async Task CreateAsync(Technique technique)
+        {
+            _context.Techniques.Add(technique);
+            await _context.SaveChangesAsync();
         }
     }
 }

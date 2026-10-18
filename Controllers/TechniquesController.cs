@@ -19,49 +19,53 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Technique technique)
+        public async Task<IActionResult> Create(Technique technique)
         {
             if (!ModelState.IsValid)
             {
                 return View(technique);
             }
 
-            _techniqueService.Create(technique);
+            await _techniqueService.CreateAsync(technique);
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var practition = _techniqueService.GetById(id);
-            return View(practition);
+            var techniques = await _techniqueService.GetByIdAsync(id);
+
+            if (techniques == null)
+            {
+                return NotFound();
+            }
+            return View(techniques);
         }
 
         [HttpPost]
-        public IActionResult Edit(Technique technique)
+        public async Task<IActionResult> Edit(Technique technique)
         {
             if (!ModelState.IsValid)
             {
                 return View(technique);
             }
-            _techniqueService.Update(technique);
 
+            await _techniqueService.UpdateAsync(technique);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _techniqueService.Delete(id);
+            await _techniqueService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var technique = _techniqueService.GetAll();
-
-            return View(technique);
+            var techniques = await _techniqueService.GetAllAsync();
+            return View(techniques);
         }
     }
 }
