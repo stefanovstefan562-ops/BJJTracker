@@ -17,9 +17,9 @@ namespace MyMvcApp.Controllers
             _academyService = academyService;
         }
 
-        public IActionResult Create(int academyId)
+        public async Task<IActionResult> Create(int academyId)
         {
-            if (_academyService.GetById(academyId) == null)
+            if (await _academyService.GetByIdAsync(academyId) == null)
             {
                 return RedirectToAction("Index", "Academies");
             }

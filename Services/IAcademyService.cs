@@ -4,11 +4,10 @@ namespace MyMvcApp.Services
 {
     public interface IAcademyService
     {
-        List<Academy> GetAll();
-        Academy? GetById(int id);
-        void Create(Academy  academy);
-        void Update(Academy academy);
-        void Delete(int id);
-
+        Task<List<Academy>> GetAllAsync();
+        Task<Academy?> GetByIdAsync(int id);
+        Task CreateAsync(Academy academy);
+        Task UpdateAsync(Academy academy);
+        Task DeleteAsync(int id);
     }
 }

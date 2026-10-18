@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
 
@@ -13,51 +12,49 @@ namespace MyMvcApp.Controllers
         {
             _academyService = academyService;
         }
-
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Academy academy)
+        public async Task<IActionResult> Create(Academy academy)
         {
             if (!ModelState.IsValid)
             {
                 return View(academy);
             }
 
-            _academyService.Create(academy);
+            await _academyService.CreateAsync(academy);
 
             return RedirectToAction("Index");
         }
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var academy = _academyService.GetById(id);
+            var academy = await _academyService.GetByIdAsync(id);
             return View(academy);
         }
         [HttpPost]
-        public IActionResult Edit(Academy academy)
+        public async Task<IActionResult> Edit(Academy academy)
         {
             if (!ModelState.IsValid)
             {
                 return View(academy);
             }
 
-            _academyService.Update(academy);
+            await _academyService.UpdateAsync(academy);
 
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _academyService.Delete(id);
+            await _academyService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var academies = _academyService.GetAll();
-
+            var academies = await _academyService.GetAllAsync();
             return View(academies);
         }
     }

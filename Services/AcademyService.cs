@@ -1,5 +1,6 @@
 ﻿using MyMvcApp.Data;
 using MyMvcApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyMvcApp.Services
 {
@@ -11,36 +12,35 @@ namespace MyMvcApp.Services
         {
             _context = context;
         }
-
-        public void Create(Academy academy)
+        public async Task<Academy?> GetByIdAsync(int id)
         {
-             _context.Academies.Add(academy);
-             _context.SaveChanges();
+            return await _context.Academies.FindAsync(id);
         }
-
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var academy = _context.Academies.Find(id);
+            var academy = await _context.Academies.FindAsync(id);
 
             if (academy == null)
-            { return; }
-                _context.Academies.Remove(academy);
-                _context.SaveChanges();
-        }
-        public List<Academy> GetAll()
-        {
-            return _context.Academies.ToList();
-        }
+            {
+                return;
+            }
 
-        public Academy? GetById(int id)
-        {
-            return _context.Academies.Find(id);
+            _context.Academies.Remove(academy);
+            await _context.SaveChangesAsync();
         }
-
-        public void Update(Academy academy)
+        public async Task UpdateAsync(Academy academy)
         {
             _context.Academies.Update(academy);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Academy>> GetAllAsync()
+        {
+            return await _context.Academies.ToListAsync();
+        }
+        public async Task CreateAsync(Academy academy)
+        {
+            _context.Academies.Add(academy);
+            await _context.SaveChangesAsync();
         }
     }
 }

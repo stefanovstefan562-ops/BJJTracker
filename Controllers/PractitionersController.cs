@@ -16,19 +16,19 @@ namespace MyMvcApp.Controllers
             _academyService = academyService;
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Academy = _academyService.GetAll();
+            ViewBag.Academy = await _academyService.GetAllAsync();
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Practitioner practitioner)
+        public async Task<IActionResult> Create(Practitioner practitioner)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Academy = _academyService.GetAll();
+                ViewBag.Academy = await _academyService.GetAllAsync();
                 return View(practitioner);
             }
 
@@ -37,21 +37,21 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var practition = _practitionerService.GetById(id);
-            ViewBag.Academy = _academyService.GetAll();
+            ViewBag.Academy = await _academyService.GetAllAsync();
             return View(practition);
         }
-
         [HttpPost]
-        public IActionResult Edit(Practitioner practitioner)
+        public async Task<IActionResult> Edit(Practitioner practitioner)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Academy = _academyService.GetAll();
+                ViewBag.Academy = await _academyService.GetAllAsync();
                 return View(practitioner);
             }
+
             _practitionerService.Update(practitioner);
 
             return RedirectToAction("Index");

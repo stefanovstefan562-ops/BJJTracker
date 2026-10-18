@@ -52,11 +52,11 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Index(int? academyId)
+        public async Task<IActionResult>Index(int? academyId)
         {
             if (academyId != null)
             {
-                var academy = _academyService.GetById(academyId.Value);
+                var academy = await _academyService.GetByIdAsync(academyId.Value);
 
                 if (academy == null)
                 {
