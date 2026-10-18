@@ -4,8 +4,8 @@ namespace MyMvcApp.Services
 {
     public interface IAttendanceService
     {
-        List<Attendance> GetAll(int? academyId = null);
-        void Create(Attendance attendance);
-        bool Exists(int trainingSessionId, int practitionerId);
+        Task<List<Attendance>> GetAllAsync(int? academyId = null);
+        Task CreateAsync(Attendance attendance);
+        Task<bool> ExistsAsync(int trainingSessionId, int practitionerId);
     }
 }

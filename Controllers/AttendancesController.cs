@@ -23,20 +23,22 @@ namespace MyMvcApp.Controllers
         }
         public async Task<IActionResult> Create(int trainingSessionId)
         {
-            var attendance = new Attendance { TrainingSessionId = trainingSessionId };
-            ViewBag.Practitioners = await _practitionerService.GetAllAsync();
-
             var trainingSession = await _trainingSessionService.GetByIdAsync(trainingSessionId);
+
+            if (trainingSession == null)
             {
                 return RedirectToAction("Index", "TrainingSessions");
             }
+
+            var attendance = new Attendance { TrainingSessionId = trainingSessionId };
+            ViewBag.Practitioners = await _practitionerService.GetAllAsync();
 
             return View(attendance);
         }
         [HttpPost]
         public async Task<IActionResult> Create(Attendance attendance)
         {
-            if (_attendanceService.Exists(attendance.TrainingSessionId, attendance.PractitionerId))
+            if (await _attendanceService.ExistsAsync(attendance.TrainingSessionId, attendance.PractitionerId))
             {
                 ModelState.AddModelError(nameof(Attendance.PractitionerId),
                     "This practitioner is already registered for this training session.");
@@ -47,8 +49,7 @@ namespace MyMvcApp.Controllers
                 return View(attendance);
             }
 
-            _attendanceService.Create(attendance);
-
+            await _attendanceService.CreateAsync(attendance);
             return RedirectToAction("Index");
         }
 
@@ -66,8 +67,7 @@ namespace MyMvcApp.Controllers
                 ViewBag.AcademyName = academy.AcademyName;
             }
 
-            var attendances = _attendanceService.GetAll(academyId);
-
+            var attendances = await _attendanceService.GetAllAsync(academyId);
             return View(attendances);
         }
     }

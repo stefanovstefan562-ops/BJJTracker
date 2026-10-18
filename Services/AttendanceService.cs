@@ -13,31 +13,31 @@ namespace MyMvcApp.Services
             _context = context;
         }
 
-        public void Create(Attendance attendance)
+        public async Task CreateAsync(Attendance attendance)
         {
             _context.Attendances.Add(attendance);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool Exists(int trainingSessionId, int practitionerId)
+        public async Task<bool> ExistsAsync(int trainingSessionId, int practitionerId)
         {
-            return _context.Attendances.Any(a => a.TrainingSessionId == trainingSessionId && a.PractitionerId == practitionerId);
+            return await _context.Attendances.AnyAsync(a => a.TrainingSessionId == trainingSessionId && a.PractitionerId == practitionerId);
         }
 
-        public List<Attendance> GetAll(int? academyId = null)
+        public async Task<List<Attendance>> GetAllAsync(int? academyId = null)
         {
-            var query = _context.Attendances
+            IQueryable<Attendance> query = _context.Attendances
                 .Include(a => a.Practitioner)
                 .Include(a => a.TrainingSession)
-                    .ThenInclude(t => t.Academy)
-                .AsQueryable();
+                    .ThenInclude(t => t.Academy);
 
             if (academyId != null)
             {
                 query = query.Where(a => a.TrainingSession.AcademyId == academyId);
             }
 
-            return query.ToList();
+            return await query.ToListAsync();
         }
     }
+    
 }
