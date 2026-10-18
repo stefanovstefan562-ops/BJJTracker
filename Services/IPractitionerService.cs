@@ -4,10 +4,10 @@ namespace MyMvcApp.Services
 {
     public interface IPractitionerService
     {
-        List<Practitioner> GetAll();
-        Practitioner? GetById(int id);
-        void Create(Practitioner practitioner);
-        void Update(Practitioner practitioner);
-        void Delete(int id);
+        Task<List<Practitioner>> GetAllAsync();
+        Task<Practitioner?> GetByIdAsync(int id);
+        Task CreateAsync(Practitioner practitioner);
+        Task UpdateAsync(Practitioner practitioner);
+        Task DeleteAsync(int id);
     }
 }

@@ -32,14 +32,14 @@ namespace MyMvcApp.Controllers
                 return View(practitioner);
             }
 
-            _practitionerService.Create(practitioner);
+            await _practitionerService.CreateAsync(practitioner);
 
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var practition = _practitionerService.GetById(id);
+            var practition = await _practitionerService.GetByIdAsync(id);
             ViewBag.Academy = await _academyService.GetAllAsync();
             return View(practition);
         }
@@ -52,23 +52,21 @@ namespace MyMvcApp.Controllers
                 return View(practitioner);
             }
 
-            _practitionerService.Update(practitioner);
-
+            await _practitionerService.UpdateAsync(practitioner);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _practitionerService.Delete(id);
+            await _practitionerService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var practitioners = _practitionerService.GetAll();
-
-            return View(practitioners);
+            var practitioner = await _practitionerService.GetAllAsync();
+            return View(practitioner);
         }
     }
 }

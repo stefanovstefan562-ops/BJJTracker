@@ -21,10 +21,10 @@ namespace MyMvcApp.Controllers
             _practitionerService = practitionerService;
             _academyService = academyService;
         }
-        public IActionResult Create(int trainingSessionId)
+        public async Task<IActionResult> Create(int trainingSessionId)
         {
             var attendance = new Attendance { TrainingSessionId = trainingSessionId };
-            ViewBag.Practitioners = _practitionerService.GetAll();
+            ViewBag.Practitioners = await _practitionerService.GetAllAsync();
 
             if (_trainingSessionService.GetById(trainingSessionId) == null)
             {
@@ -34,7 +34,7 @@ namespace MyMvcApp.Controllers
             return View(attendance);
         }
         [HttpPost]
-        public IActionResult Create(Attendance attendance)
+        public async Task<IActionResult> Create(Attendance attendance)
         {
             if (_attendanceService.Exists(attendance.TrainingSessionId, attendance.PractitionerId))
             {
@@ -43,7 +43,7 @@ namespace MyMvcApp.Controllers
             }
             if (!ModelState.IsValid)
             {
-                ViewBag.Practitioners = _practitionerService.GetAll();
+                ViewBag.Practitioners = await _practitionerService.GetAllAsync();
                 return View(attendance);
             }
 

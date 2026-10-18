@@ -8,41 +8,40 @@ namespace MyMvcApp.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public PractitionerService (ApplicationDbContext context)
+        public PractitionerService(ApplicationDbContext context)
         {
             _context = context;
         }
-
-        public void Create(Practitioner practitioner)
+        public async Task<Practitioner?> GetByIdAsync(int id)
         {
-            _context.Practitioners.Add(practitioner);
-            _context.SaveChanges();
+            return await _context.Practitioners.FindAsync(id);
         }
-
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var practitioner = _context.Practitioners.Find(id);
+            var practitioner = await _context.Practitioners.FindAsync(id);
 
             if (practitioner == null)
-            { return; }
+            {
+                return;
+            }
+
             _context.Practitioners.Remove(practitioner);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public List<Practitioner> GetAll()
-        {
-           return _context.Practitioners.Include(p => p.Academy).ToList();
-        }
-
-        public Practitioner? GetById(int id)
-        {
-            return _context.Practitioners.Find(id);
-        }
-
-        public void Update(Practitioner practitioner)
+        public async Task UpdateAsync(Practitioner practitioner)
         {
             _context.Practitioners.Update(practitioner);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Practitioner>> GetAllAsync()
+        {
+            return await _context.Practitioners.ToListAsync();
+        }
+        public async Task CreateAsync(Practitioner practitioner)
+        {
+            _context.Practitioners.Add(practitioner);
+            await _context.SaveChangesAsync();
         }
     }
 }
