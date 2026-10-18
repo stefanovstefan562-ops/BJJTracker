@@ -26,7 +26,7 @@ namespace MyMvcApp.Controllers
             var attendance = new Attendance { TrainingSessionId = trainingSessionId };
             ViewBag.Practitioners = await _practitionerService.GetAllAsync();
 
-            if (_trainingSessionService.GetById(trainingSessionId) == null)
+            var trainingSession = await _trainingSessionService.GetByIdAsync(trainingSessionId);
             {
                 return RedirectToAction("Index", "TrainingSessions");
             }

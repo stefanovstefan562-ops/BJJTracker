@@ -30,7 +30,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TrainingSession trainingSession)
+        public async Task<IActionResult> Create(TrainingSession trainingSession)
         {
             ValidateTrainingDateTime(trainingSession);
 
@@ -39,22 +39,24 @@ namespace MyMvcApp.Controllers
                 return View(trainingSession);
             }
 
-            _trainingSessionService.Create(trainingSession);
-
+            await _trainingSessionService.CreateAsync(trainingSession);
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var trainingSession = _trainingSessionService.GetById(id);
+            var trainingSession = await _trainingSessionService.GetByIdAsync(id);
+            if (trainingSession == null)
+            {
+                return NotFound();
+            }
             return View(trainingSession);
         }
 
         [HttpPost]
-        public IActionResult Edit(TrainingSession trainingSession)
+        public async Task<IActionResult> Edit(TrainingSession trainingSession)
         {
-            var existing = _trainingSessionService.GetById(trainingSession.Id);
-
+            var existing = await _trainingSessionService.GetByIdAsync(trainingSession.Id);
             if (existing == null)
             {
                 return NotFound();
@@ -79,22 +81,22 @@ namespace MyMvcApp.Controllers
             existing.DurationOfTheTraining = trainingSession.DurationOfTheTraining;
             existing.TrainingType = trainingSession.TrainingType;
 
-            _trainingSessionService.Update(existing);
+            await _trainingSessionService.UpdateAsync(existing);
 
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _trainingSessionService.Delete(id);
+            await _trainingSessionService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var trainingSessions = _trainingSessionService.GetAll();
+            var trainingSessions = await _trainingSessionService.GetAllAsync();
             return View(trainingSessions);
         }
 

@@ -8,41 +8,43 @@ namespace MyMvcApp.Services
     {
         private readonly ApplicationDbContext _context;
 
-        public TrainingSessionService (ApplicationDbContext context)
+        public TrainingSessionService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public void Create(TrainingSession trainingSession)
+        public async Task<TrainingSession?> GetByIdAsync(int id)
         {
-            _context.TrainingSessions.Add(trainingSession);
-            _context.SaveChanges();
+            return await _context.TrainingSessions.FindAsync(id);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var trainingSession = _context.TrainingSessions.Find(id);
+            var trainingSession = await _context.TrainingSessions.FindAsync(id);
 
             if (trainingSession == null)
-            { return; }
+            {
+                return;
+            }
+
             _context.TrainingSessions.Remove(trainingSession);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public List<TrainingSession> GetAll()
-        {
-            return _context.TrainingSessions.Include(t => t.Academy).ToList();
-        }
-
-        public TrainingSession? GetById(int id)
-        {
-            return _context.TrainingSessions.Find(id);
-        }
-
-        public void Update(TrainingSession trainingSession)
+        public async Task UpdateAsync(TrainingSession trainingSession)
         {
             _context.TrainingSessions.Update(trainingSession);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<TrainingSession>>GetAllAsync()
+        {
+            return await _context.TrainingSessions.Include(t => t.Academy).ToListAsync();
+        }
+
+        public async Task CreateAsync(TrainingSession trainingSession)
+        {
+            _context.TrainingSessions.Add(trainingSession);
+            await _context.SaveChangesAsync();
         }
     }
 }
