@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MyMvcApp.Data;
 using MyMvcApp.Services;
 using MyMvcApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
