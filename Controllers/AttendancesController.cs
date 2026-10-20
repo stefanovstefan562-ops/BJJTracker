@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyMvcApp.Controllers
 {
+    [Authorize]
     public class AttendancesController : Controller
     {
         private readonly IAttendanceService _attendanceService;

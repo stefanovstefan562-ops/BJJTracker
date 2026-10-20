@@ -72,6 +72,10 @@ namespace MyMvcApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Account type")]
+            public string AccountType { get; set; }
+
+            [Required]
             [StringLength(30, MinimumLength = 3, ErrorMessage = "The {0} must be between {2} and {1} characters long.")]
             [Display(Name = "Username")]
             public string UserName { get; set; }
@@ -118,6 +122,12 @@ namespace MyMvcApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                if (Input.AccountType != "Academy" && Input.AccountType != "Practitioner")
+                {
+                    ModelState.AddModelError("Input.AccountType", "Please choose a valid account type.");
+                    return Page();
+                }
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
@@ -126,6 +136,15 @@ namespace MyMvcApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, Input.AccountType);
+                    if (Input.AccountType == "Academy")
+                    {
+                        TempData["WelcomeMessage"] = "Your academy account was created!!!";
+                    }
+                    else
+                    {
+                        TempData["WelcomeMessage"] = "Welcome new practitioner!!!";
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

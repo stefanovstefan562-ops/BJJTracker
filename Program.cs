@@ -18,9 +18,9 @@ builder.Services.AddScoped<ITechniqueService, TechniqueService>();
 builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddDefaultIdentity<ApplicationUser>
-    (options =>{ options.SignIn.RequireConfirmedAccount = false; options.User.RequireUniqueEmail = true;})
+    (options => { options.SignIn.RequireConfirmedAccount = false; options.User.RequireUniqueEmail = true; })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
 
 var app = builder.Build();
 
@@ -45,5 +45,18 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    foreach (var roleName in new[] { "Academy", "Practitioner" })
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
 
 app.Run();
