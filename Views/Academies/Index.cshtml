@@ -3,7 +3,10 @@
     ViewData["Title"] = "Academies";
 }
 <h1 class="mb-4">Academies</h1>
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Academy</a>
+@if (User.IsInRole("Academy"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New Academy</a>
+}
 <table class="table table-striped table-hover align-middle">
     <thead>
         <tr>
@@ -21,12 +24,18 @@
                 <td>@academy.AcademyAddress</td>
                 <td>@academy.AcademyDescription</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@academy.Id" class="btn btn-sm btn-outline-primary">Edit</a>
-                    <a asp-controller="TrainingSessions" asp-action="Create" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-success">Add Training Session</a>
+                    @if (User.IsInRole("Academy"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@academy.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-controller="TrainingSessions" asp-action="Create" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-success">Add Training Session</a>
+                    }
                     <a asp-controller="Attendances" asp-action="Index" asp-route-academyId="@academy.Id" class="btn btn-sm btn-outline-info">Attendances</a>
-                    <form asp-action="Delete" asp-route-id="@academy.Id" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
+                    @if (User.IsInRole("Academy"))
+                    {
+                        <form asp-action="Delete" asp-route-id="@academy.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }

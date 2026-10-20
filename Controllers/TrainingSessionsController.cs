@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyMvcApp.Controllers
 {
+    [Authorize]
     public class TrainingSessionsController : Controller
     {
         private readonly ITrainingSessionService _trainingSessionService;
@@ -16,7 +18,7 @@ namespace MyMvcApp.Controllers
 
             _academyService = academyService;
         }
-
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Create(int academyId)
         {
             if (await _academyService.GetByIdAsync(academyId) == null)
@@ -30,6 +32,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Create(TrainingSession trainingSession)
         {
             ValidateTrainingDateTime(trainingSession);
@@ -42,7 +45,7 @@ namespace MyMvcApp.Controllers
             await _trainingSessionService.CreateAsync(trainingSession);
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(int id)
         {
             var trainingSession = await _trainingSessionService.GetByIdAsync(id);
@@ -54,6 +57,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(TrainingSession trainingSession)
         {
             var existing = await _trainingSessionService.GetByIdAsync(trainingSession.Id);
@@ -85,15 +89,15 @@ namespace MyMvcApp.Controllers
 
             return RedirectToAction("Index");
         }
-
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Delete(int id)
         {
             await _trainingSessionService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var trainingSessions = await _trainingSessionService.GetAllAsync();
