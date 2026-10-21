@@ -107,6 +107,9 @@ namespace MyMvcApp.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.UserAcademyId = user?.AcademyId;
+
             var academies = await _academyService.GetAllAsync();
             return View(academies);
         }
