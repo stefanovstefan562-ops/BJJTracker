@@ -2,6 +2,7 @@
 using MyMvcApp.Models;
 using MyMvcApp.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace MyMvcApp.Controllers
 {
@@ -16,12 +17,15 @@ namespace MyMvcApp.Controllers
 
         private readonly IAcademyService _academyService;
 
-        public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService, IPractitionerService practitionerService, IAcademyService academyService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService,
+            IPractitionerService practitionerService, IAcademyService academyService, UserManager<ApplicationUser> userManager)
         {
             _attendanceService = attendanceService;
             _trainingSessionService = trainingSessionService;
             _practitionerService = practitionerService;
             _academyService = academyService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Create(int trainingSessionId)
         {
@@ -55,20 +59,30 @@ namespace MyMvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult>Index(int? academyId)
+        public async Task<IActionResult> Index(int? academyId)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (User.IsInRole("Academy"))
+            {
+                academyId = user.AcademyId;
+                if (academyId == null)
+                {
+                    return RedirectToAction("Index", "Academies");
+                }
+            }
             if (academyId != null)
             {
                 var academy = await _academyService.GetByIdAsync(academyId.Value);
-
                 if (academy == null)
                 {
                     return NotFound();
                 }
-
                 ViewBag.AcademyName = academy.AcademyName;
             }
-
             var attendances = await _attendanceService.GetAllAsync(academyId);
             return View(attendances);
         }
