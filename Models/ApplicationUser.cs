@@ -6,5 +6,7 @@ namespace MyMvcApp.Models
     {
         public int? AcademyId { get; set; }
         public Academy? Academy { get; set; }
+        public int? PractitionerId { get; set; }
+        public Practitioner? Practitioner { get; set; }
     }
 }

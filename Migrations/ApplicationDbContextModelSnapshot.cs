@@ -224,6 +224,9 @@ namespace MyMvcApp.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("PractitionerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -245,6 +248,8 @@ namespace MyMvcApp.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PractitionerId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -448,7 +453,14 @@ namespace MyMvcApp.Migrations
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                        .WithMany()
+                        .HasForeignKey("PractitionerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Academy");
+
+                    b.Navigation("Practitioner");
                 });
 
             modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>

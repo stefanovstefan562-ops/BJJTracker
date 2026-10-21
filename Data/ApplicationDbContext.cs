@@ -30,6 +30,10 @@ namespace MyMvcApp.Data
                 .WithMany()
                 .HasForeignKey(u => u.AcademyId)
                 .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(u => u.Practitioner)
+                .WithMany().HasForeignKey(u => u.PractitionerId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 
