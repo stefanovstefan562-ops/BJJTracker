@@ -184,6 +184,9 @@ namespace MyMvcApp.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("AcademyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
@@ -232,6 +235,8 @@ namespace MyMvcApp.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcademyId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -434,6 +439,16 @@ namespace MyMvcApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MyMvcApp.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("MyMvcApp.Models.Academy", "Academy")
+                        .WithMany()
+                        .HasForeignKey("AcademyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Academy");
                 });
 
             modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>

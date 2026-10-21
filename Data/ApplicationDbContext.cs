@@ -8,7 +8,7 @@ namespace MyMvcApp.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-        
+
         public DbSet<Practitioner> Practitioners { get; set; }
         public DbSet<TrainingSession> TrainingSessions { get; set; }
         public DbSet<Technique> Techniques { get; set; }
@@ -23,6 +23,12 @@ namespace MyMvcApp.Data
                 .HasOne(p => p.Academy)
                 .WithMany()
                 .HasForeignKey(p => p.AcademyId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasOne(u => u.Academy)
+                .WithMany()
+                .HasForeignKey(u => u.AcademyId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }

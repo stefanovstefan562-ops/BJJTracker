@@ -2,6 +2,7 @@
 using MyMvcApp.Models;
 using MyMvcApp.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace MyMvcApp.Controllers
 {
@@ -10,9 +11,11 @@ namespace MyMvcApp.Controllers
     {
         private readonly IAcademyService _academyService;
 
-        public AcademiesController(IAcademyService academyService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public AcademiesController(IAcademyService academyService, UserManager<ApplicationUser> userManager)
         {
             _academyService = academyService;
+            _userManager = userManager;
         }
         [Authorize(Roles = "Academy")]
         public IActionResult Create()
@@ -28,7 +31,21 @@ namespace MyMvcApp.Controllers
                 return View(academy);
             }
 
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+
+            if (user.AcademyId != null)
+            {
+                return RedirectToAction("Index");
+            }
+
             await _academyService.CreateAsync(academy);
+
+            user.AcademyId = academy.Id;
+            await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Index");
         }
