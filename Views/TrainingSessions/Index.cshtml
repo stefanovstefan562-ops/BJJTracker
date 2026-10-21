@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<TrainingSession>
 @{
 	ViewData["Title"] = "Training Sessions";
+	var userAcademyId = (int?)ViewBag.UserAcademyId;
 }
 <h1 class="mb-4">Training Sessions</h1>
 
@@ -25,12 +26,12 @@
 				<td>@trainingSession.StartTime</td>
 				<td>@trainingSession.TrainingType</td>
 				<td>
-					@if (User.IsInRole("Academy"))
+					@if (User.IsInRole("Academy") && userAcademyId == trainingSession.AcademyId)
 					{
 						<a asp-action="Edit" asp-route-id="@trainingSession.Id" class="btn btn-sm btn-outline-primary">Edit</a>
 					}
 					<a asp-controller="Attendances" asp-action="Create" asp-route-trainingSessionId="@trainingSession.Id" class="btn btn-sm btn-outline-success">Add Attendance</a>
-					@if (User.IsInRole("Academy"))
+					@if (User.IsInRole("Academy") && userAcademyId == trainingSession.AcademyId)
 					{
 						<form asp-action="Delete" asp-route-id="@trainingSession.Id" method="post" class="d-inline">
 							<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
