@@ -1,9 +1,13 @@
 ﻿@model IEnumerable<Practitioner>
 @{
 	ViewData["Title"] = "Practitioners";
+	var userPractitionerId = (int?)ViewBag.UserPractitionerId;
 }
 <h1 class="mb-4">Practitioners</h1>
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Practitioner</a>
+@if (User.IsInRole("Practitioner") && userPractitionerId == null)
+{
+	<a asp-action="Create" class="btn btn-primary mb-3">Create New Practitioner</a>
+}
 <table class="table table-striped table-hover align-middle">
 	<thead>
 		<tr>
@@ -23,10 +27,16 @@
 				<td>@practitioner.Academy?.AcademyName</td>
 				<td>@practitioner.CurrentBelt</td>
 				<td>
-					<a asp-action="Edit" asp-route-id="@practitioner.Id" class="btn btn-sm btn-outline-primary">Edit</a>
-					<form asp-action="Delete" asp-route-id="@practitioner.Id" method="post" class="d-inline">
-						<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-					</form>
+					@if (User.IsInRole("Practitioner") && userPractitionerId == practitioner.Id)
+					{
+						<a asp-action="Edit" asp-route-id="@practitioner.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+					}
+					@if (User.IsInRole("Practitioner") && userPractitionerId == practitioner.Id)
+					{
+						<form asp-action="Delete" asp-route-id="@practitioner.Id" method="post" class="d-inline">
+							<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+						</form>
+					}
 				</td>
 			</tr>
 		}

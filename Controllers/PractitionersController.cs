@@ -56,16 +56,40 @@ namespace MyMvcApp.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Edit(int id)
         {
-            var practition = await _practitionerService.GetByIdAsync(id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId != id)
+            {
+                return Forbid();
+            }
+            var practitioner = await _practitionerService.GetByIdAsync(id);
+            if (practitioner == null)
+            {
+                return NotFound();
+            }
             ViewBag.Academy = await _academyService.GetAllAsync();
-            return View(practition);
+
+            return View(practitioner);
         }
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Edit(Practitioner practitioner)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId != practitioner.Id)
+            {
+                return Forbid();
+            }
             if (!ModelState.IsValid)
             {
                 ViewBag.Academy = await _academyService.GetAllAsync();
@@ -77,16 +101,29 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Delete(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId != id)
+            {
+                return Forbid();
+            }
             await _practitionerService.DeleteAsync(id);
 
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> Index()
         {
-            var practitioner = await _practitionerService.GetAllAsync();
-            return View(practitioner);
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.UserPractitionerId = user?.PractitionerId;
+
+            var practitioners = await _practitionerService.GetAllAsync();
+            return View(practitioners);
         }
     }
 }

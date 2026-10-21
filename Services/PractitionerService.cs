@@ -36,7 +36,7 @@ namespace MyMvcApp.Services
         }
         public async Task<List<Practitioner>> GetAllAsync()
         {
-            return await _context.Practitioners.ToListAsync();
+            return await _context.Practitioners.Include(p => p.Academy).ToListAsync();
         }
         public async Task CreateAsync(Practitioner practitioner)
         {
