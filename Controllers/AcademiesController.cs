@@ -30,18 +30,15 @@ namespace MyMvcApp.Controllers
             {
                 return View(academy);
             }
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Challenge();
             }
-
             if (user.AcademyId != null)
             {
                 return RedirectToAction("Index");
             }
-
             await _academyService.CreateAsync(academy);
 
             user.AcademyId = academy.Id;
@@ -52,6 +49,15 @@ namespace MyMvcApp.Controllers
         [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.AcademyId != id)
+            {
+                return Forbid();
+            }
             var academy = await _academyService.GetByIdAsync(id);
             if (academy == null)
             {
@@ -63,6 +69,15 @@ namespace MyMvcApp.Controllers
         [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(Academy academy)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.AcademyId != academy.Id)
+            {
+                return Forbid();
+            }
             if (!ModelState.IsValid)
             {
                 return View(academy);
@@ -76,6 +91,15 @@ namespace MyMvcApp.Controllers
         [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Delete(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.AcademyId != id)
+            {
+                return Forbid();
+            }
             await _academyService.DeleteAsync(id);
 
             return RedirectToAction("Index");
