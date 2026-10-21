@@ -1,21 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
+
 namespace MyMvcApp.Controllers
 {
+    [Authorize]
     public class PractitionersController : Controller
     {
         private readonly IPractitionerService _practitionerService;
 
         private readonly IAcademyService _academyService;
 
-        public PractitionersController(IPractitionerService practitionerService, IAcademyService academyService)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public PractitionersController(IPractitionerService practitionerService, IAcademyService academyService,
+            UserManager<ApplicationUser> userManager)
         {
             _practitionerService = practitionerService;
 
             _academyService = academyService;
+            _userManager = userManager;
         }
-
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Academy = await _academyService.GetAllAsync();
@@ -24,6 +32,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(Practitioner practitioner)
         {
             if (!ModelState.IsValid)
@@ -31,8 +40,19 @@ namespace MyMvcApp.Controllers
                 ViewBag.Academy = await _academyService.GetAllAsync();
                 return View(practitioner);
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId != null)
+            {
+                return RedirectToAction("Index");
+            }
             await _practitionerService.CreateAsync(practitioner);
+
+            user.PractitionerId = practitioner.Id;
+            await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Index");
         }
