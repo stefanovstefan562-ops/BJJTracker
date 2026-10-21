@@ -30,7 +30,10 @@
 					{
 						<a asp-action="Edit" asp-route-id="@trainingSession.Id" class="btn btn-sm btn-outline-primary">Edit</a>
 					}
-					<a asp-controller="Attendances" asp-action="Create" asp-route-trainingSessionId="@trainingSession.Id" class="btn btn-sm btn-outline-success">Add Attendance</a>
+					@if (User.IsInRole("Practitioner"))
+					{
+						<a asp-controller="Attendances" asp-action="Create" asp-route-trainingSessionId="@trainingSession.Id" class="btn btn-sm btn-outline-success">Add Attendance</a>
+					}
 					@if (User.IsInRole("Academy") && userAcademyId == trainingSession.AcademyId)
 					{
 						<form asp-action="Delete" asp-route-id="@trainingSession.Id" method="post" class="d-inline">

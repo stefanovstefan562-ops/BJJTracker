@@ -27,6 +27,7 @@ namespace MyMvcApp.Controllers
             _academyService = academyService;
             _userManager = userManager;
         }
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(int trainingSessionId)
         {
             var trainingSession = await _trainingSessionService.GetByIdAsync(trainingSessionId);
@@ -42,6 +43,7 @@ namespace MyMvcApp.Controllers
             return View(attendance);
         }
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(Attendance attendance)
         {
             if (await _attendanceService.ExistsAsync(attendance.TrainingSessionId, attendance.PractitionerId))
