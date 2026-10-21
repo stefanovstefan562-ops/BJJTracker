@@ -25,11 +25,17 @@
 				<td>@trainingSession.StartTime</td>
 				<td>@trainingSession.TrainingType</td>
 				<td>
-					<a asp-action="Edit" asp-route-id="@trainingSession.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+					@if (User.IsInRole("Academy"))
+					{
+						<a asp-action="Edit" asp-route-id="@trainingSession.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+					}
 					<a asp-controller="Attendances" asp-action="Create" asp-route-trainingSessionId="@trainingSession.Id" class="btn btn-sm btn-outline-success">Add Attendance</a>
-					<form asp-action="Delete" asp-route-id="@trainingSession.Id" method="post" class="d-inline">
-						<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-					</form>
+					@if (User.IsInRole("Academy"))
+					{
+						<form asp-action="Delete" asp-route-id="@trainingSession.Id" method="post" class="d-inline">
+							<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+						</form>
+					}
 				</td>
 			</tr>
 		}
