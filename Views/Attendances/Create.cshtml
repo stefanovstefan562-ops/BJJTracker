@@ -9,15 +9,6 @@
 	<form asp-action="Create" method="post">
 		<div asp-validation-summary="All" class="text-danger"></div>
 		<input type="hidden" asp-for="TrainingSessionId" />
-
-		<div class="mb-3">
-			<label asp-for="PractitionerId" class="form-label"></label>
-			<select asp-for="PractitionerId" class="form-select"
-					asp-items="@(new SelectList(ViewBag.Practitioners, "Id", "FirstName"))">
-			</select>
-			<span asp-validation-for="PractitionerId" class="text-danger"></span>
-		</div>
-
 		<button type="submit" class="btn btn-primary">Save</button>
 		<a asp-controller="TrainingSessions" asp-action="Index" class="btn btn-secondary">Cancel</a>
 	</form>

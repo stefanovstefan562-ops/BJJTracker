@@ -36,9 +36,16 @@ namespace MyMvcApp.Controllers
             {
                 return RedirectToAction("Index", "TrainingSessions");
             }
-
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId == null)
+            {
+                return RedirectToAction("Create", "Practitioners");
+            }
             var attendance = new Attendance { TrainingSessionId = trainingSessionId };
-            ViewBag.Practitioners = await _practitionerService.GetAllAsync();
 
             return View(attendance);
         }
@@ -46,14 +53,24 @@ namespace MyMvcApp.Controllers
         [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(Attendance attendance)
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Challenge();
+            }
+            if (user.PractitionerId == null)
+            {
+                return RedirectToAction("Create", "Practitioners");
+            }
+
+            attendance.PractitionerId = user.PractitionerId.Value;
+
             if (await _attendanceService.ExistsAsync(attendance.TrainingSessionId, attendance.PractitionerId))
             {
-                ModelState.AddModelError(nameof(Attendance.PractitionerId),
-                    "This practitioner is already registered for this training session.");
+                ModelState.AddModelError(string.Empty, "You are already registered for this training session.");
             }
             if (!ModelState.IsValid)
             {
-                ViewBag.Practitioners = await _practitionerService.GetAllAsync();
                 return View(attendance);
             }
 
