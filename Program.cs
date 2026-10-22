@@ -17,6 +17,7 @@ builder.Services.AddScoped<IPractitionerService, PractitionerService>();
 builder.Services.AddScoped<ITechniqueService, TechniqueService>();
 builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
+builder.Services.AddScoped<ISparringSessionService, SparringSessionService>();
 builder.Services.AddDefaultIdentity<ApplicationUser>
     (options => { options.SignIn.RequireConfirmedAccount = false; options.User.RequireUniqueEmail = true; })
     .AddRoles<IdentityRole>()
