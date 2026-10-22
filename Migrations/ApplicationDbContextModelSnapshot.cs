@@ -316,22 +316,30 @@ namespace MyMvcApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("PractitionerId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SparringParatnerBelt")
                         .HasColumnType("int");
 
                     b.Property<string>("SparringPartnerAcademy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("SparringPrtnerName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("SparringResult")
+                    b.Property<int>("SparringResult")
                         .HasColumnType("int");
 
                     b.Property<int>("TrainingSessionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PractitionerId");
 
                     b.HasIndex("TrainingSessionId");
 
@@ -494,11 +502,19 @@ namespace MyMvcApp.Migrations
 
             modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
                 {
+                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                        .WithMany()
+                        .HasForeignKey("PractitionerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Practitioner");
 
                     b.Navigation("TrainingSession");
                 });
