@@ -18,6 +18,7 @@ namespace MyMvcApp.Models
         [Required(ErrorMessage = "The sparring result is mandatory!!!")]
         [Display(Name = "Sparring result")]
         public SparringResult? SparringResult { get; set; }
+        [Display(Name = "Training session")]
         public int TrainingSessionId { get; set; }
         public TrainingSession? TrainingSession { get; set; }
         public int PractitionerId { get; set; }
