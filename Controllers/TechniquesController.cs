@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyMvcApp.Models;
 using MyMvcApp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyMvcApp.Controllers
 {
+    [Authorize]
     public class TechniquesController : Controller
     {
         private readonly ITechniqueService _techniqueService;
@@ -12,13 +14,14 @@ namespace MyMvcApp.Controllers
         {
             _techniqueService = techniqueService;
         }
-
+        [Authorize(Roles = "Academy")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Create(Technique technique)
         {
             if (!ModelState.IsValid)
@@ -30,7 +33,7 @@ namespace MyMvcApp.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(int id)
         {
             var techniques = await _techniqueService.GetByIdAsync(id);
@@ -43,6 +46,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Edit(Technique technique)
         {
             if (!ModelState.IsValid)
@@ -55,6 +59,7 @@ namespace MyMvcApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Academy")]
         public async Task<IActionResult> Delete(int id)
         {
             await _techniqueService.DeleteAsync(id);

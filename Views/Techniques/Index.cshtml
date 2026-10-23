@@ -3,15 +3,21 @@
 	ViewData["Title"] = "Techniques";
 }
 <h1 class="mb-4">Techniques</h1>
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Technique</a>
+@if (User.IsInRole("Academy"))
+{
+	<a asp-action="Create" class="btn btn-primary mb-3">Create New Technique</a>
+}
 <table class="table table-striped table-hover align-middle">
 	<thead>
 		<tr>
-			<th>TechniqueName</th>
-			<th>TechniquePosition</th>
-			<th>TechniqueDescription</th>
-			<th>TechniqueVideo</th>
-			<th>Actions</th>
+			<th>Name</th>
+			<th>Position</th>
+			<th>Description</th>
+			<th>Video</th>
+			@if (User.IsInRole("Academy"))
+			{
+				<th>Actions</th>
+			}
 		</tr>
 	</thead>
 	<tbody>
@@ -22,12 +28,16 @@
 				<td>@technique.TechniquePosition</td>
 				<td>@technique.TechniqueDescription</td>
 				<td>@technique.TechniqueVideo</td>
+				@if (User.IsInRole("Academy"))
+				{
+
 				<td>
 					<a asp-action="Edit" asp-route-id="@technique.Id" class="btn btn-sm btn-outline-primary">Edit</a>
 					<form asp-action="Delete" asp-route-id="@technique.Id" method="post" class="d-inline">
 						<button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
 					</form>
 				</td>
+				}
 			</tr>
 		}
 	</tbody>
