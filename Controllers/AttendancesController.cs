@@ -85,6 +85,15 @@ namespace MyMvcApp.Controllers
             {
                 return Challenge();
             }
+            if (User.IsInRole("Practitioner"))
+            {
+                if (user.PractitionerId == null)
+                {
+                    return RedirectToAction("Create", "Practitioners");
+                }
+                var ownAttendances = await _attendanceService.GetAllByPractitionerAsync(user.PractitionerId.Value);
+                return View(ownAttendances);
+            }
             if (User.IsInRole("Academy"))
             {
                 academyId = user.AcademyId;

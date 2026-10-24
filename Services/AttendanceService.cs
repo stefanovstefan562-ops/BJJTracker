@@ -41,7 +41,8 @@ namespace MyMvcApp.Services
         public async Task<List<Attendance>> GetAllByPractitionerAsync(int practitionerId)
         {
             IQueryable<Attendance> query = _context.Attendances
-                .Include(a => a.TrainingSession)
+                .Include(a => a.Practitioner)
+                .Include(a => a.TrainingSession).ThenInclude(t => t.Academy)
                 .Where(a => a.PractitionerId == practitionerId);
 
             return await query.ToListAsync();
