@@ -1,0 +1,30 @@
+﻿@model SparringSession
+@using MyMvcApp.Models.Enums
+
+<div class="mb-3">
+	<label asp-for="TrainingSessionId" class="form-label"></label>
+	<select asp-for="TrainingSessionId" class="form-select"
+			asp-items="@(new SelectList(ViewBag.TrainingSessions, "Id", "DateOfTheTraining"))">
+	</select>
+	<span asp-validation-for="TrainingSessionId" class="text-danger"></span>
+</div>
+<div class="mb-3">
+	<label asp-for="SparringPrtnerName" class="form-label"></label>
+	<input asp-for="SparringPrtnerName" class="form-control" />
+	<span asp-validation-for="SparringPrtnerName" class="text-danger"></span>
+</div>
+<div class="mb-3">
+	<label asp-for="SparringParatnerBelt" class="form-label"></label>
+	<select asp-for="SparringParatnerBelt" class="form-select" asp-items="Html.GetEnumSelectList<BeltRank>()"></select>
+	<span asp-validation-for="SparringParatnerBelt" class="text-danger"></span>
+</div>
+<div class="mb-3">
+	<label asp-for="SparringPartnerAcademy" class="form-label"></label>
+	<input asp-for="SparringPartnerAcademy" class="form-control" />
+	<span asp-validation-for="SparringPartnerAcademy" class="text-danger"></span>
+</div>
+<div class="mb-3">
+	<label asp-for="SparringResult" class="form-label"></label>
+	<select asp-for="SparringResult" class="form-select" asp-items="Html.GetEnumSelectList<SparringResult>()"></select>
+	<span asp-validation-for="SparringResult" class="text-danger"></span>
+</div>
