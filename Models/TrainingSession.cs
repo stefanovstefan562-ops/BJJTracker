@@ -1,8 +1,8 @@
-﻿using MyMvcApp.Models.Enums;
+﻿using BjjTracker.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using MyMvcApp.Validation;
+using BjjTracker.Validation;
 
-namespace MyMvcApp.Models
+namespace BjjTracker.Models
 {
     public class TrainingSession
     {

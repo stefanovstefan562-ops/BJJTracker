@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyMvcApp.Data;
+using BjjTracker.Data;
 
 #nullable disable
 
-namespace MyMvcApp.Migrations
+namespace BjjTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20261006082045_RestructureTrainingSessionWithAttendance")]
@@ -25,7 +25,7 @@ namespace MyMvcApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>
+            modelBuilder.Entity("BjjTracker.Models.Attendance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
+            modelBuilder.Entity("BjjTracker.Models.Practitioner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Practitioners");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.SparringSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +105,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("SparringSessions");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Technique", b =>
+            modelBuilder.Entity("BjjTracker.Models.Technique", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -131,7 +131,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Techniques");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.TrainingSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.TrainingSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,15 +161,15 @@ namespace MyMvcApp.Migrations
                     b.ToTable("TrainingSessions");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>
+            modelBuilder.Entity("BjjTracker.Models.Attendance", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                    b.HasOne("BjjTracker.Models.Practitioner", "Practitioner")
                         .WithMany()
                         .HasForeignKey("PractitionerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
+                    b.HasOne("BjjTracker.Models.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -180,9 +180,9 @@ namespace MyMvcApp.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.SparringSession", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
+                    b.HasOne("BjjTracker.Models.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -191,14 +191,14 @@ namespace MyMvcApp.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.TrainingSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.TrainingSession", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Practitioner", null)
+                    b.HasOne("BjjTracker.Models.Practitioner", null)
                         .WithMany("TrainingSessions")
                         .HasForeignKey("PractitionerId");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
+            modelBuilder.Entity("BjjTracker.Models.Practitioner", b =>
                 {
                     b.Navigation("TrainingSessions");
                 });

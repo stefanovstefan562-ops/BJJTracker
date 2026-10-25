@@ -1,8 +1,8 @@
-﻿using MyMvcApp.Models.Enums;
+﻿using BjjTracker.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyMvcApp.Models
+namespace BjjTracker.Models
 {
     public class Technique
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Models;
-using MyMvcApp.Services;
+using BjjTracker.Models;
+using BjjTracker.Services;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MyMvcApp.Controllers
+namespace BjjTracker.Controllers
 {
     [Authorize]
     public class TechniquesController : Controller

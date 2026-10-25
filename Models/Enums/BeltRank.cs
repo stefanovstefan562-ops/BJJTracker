@@ -1,4 +1,4 @@
-﻿namespace MyMvcApp.Models.Enums
+﻿namespace BjjTracker.Models.Enums
 {
     public enum BeltRank
     {

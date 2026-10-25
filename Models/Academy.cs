@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyMvcApp.Models
+namespace BjjTracker.Models
 {
     public class Academy
     {

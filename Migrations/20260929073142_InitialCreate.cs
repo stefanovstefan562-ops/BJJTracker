@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MyMvcApp.Migrations
+namespace BjjTracker.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MyMvcApp.Models;
+using BjjTracker.Models;
 
-namespace MyMvcApp.Areas.Identity.Pages.Account
+namespace BjjTracker.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {

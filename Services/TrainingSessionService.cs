@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyMvcApp.Data;
-using MyMvcApp.Models;
+using BjjTracker.Data;
+using BjjTracker.Models;
 
-namespace MyMvcApp.Services
+namespace BjjTracker.Services
 {
     public class TrainingSessionService : ITrainingSessionService
     {

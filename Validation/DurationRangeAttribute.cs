@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyMvcApp.Validation
+namespace BjjTracker.Validation
 {
     public class DurationRangeAttribute : ValidationAttribute
     {

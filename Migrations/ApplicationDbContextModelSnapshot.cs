@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyMvcApp.Data;
+using BjjTracker.Data;
 
 #nullable disable
 
-namespace MyMvcApp.Migrations
+namespace BjjTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Academy", b =>
+            modelBuilder.Entity("BjjTracker.Models.Academy", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -179,7 +179,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Academies");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("BjjTracker.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -254,7 +254,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>
+            modelBuilder.Entity("BjjTracker.Models.Attendance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -277,7 +277,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
+            modelBuilder.Entity("BjjTracker.Models.Practitioner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,7 +308,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Practitioners");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.SparringSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -346,7 +346,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("SparringSessions");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Technique", b =>
+            modelBuilder.Entity("BjjTracker.Models.Technique", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -373,7 +373,7 @@ namespace MyMvcApp.Migrations
                     b.ToTable("Techniques");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.TrainingSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.TrainingSession", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -414,7 +414,7 @@ namespace MyMvcApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.ApplicationUser", null)
+                    b.HasOne("BjjTracker.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -423,7 +423,7 @@ namespace MyMvcApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.ApplicationUser", null)
+                    b.HasOne("BjjTracker.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -438,7 +438,7 @@ namespace MyMvcApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyMvcApp.Models.ApplicationUser", null)
+                    b.HasOne("BjjTracker.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -447,21 +447,21 @@ namespace MyMvcApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.ApplicationUser", null)
+                    b.HasOne("BjjTracker.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.ApplicationUser", b =>
+            modelBuilder.Entity("BjjTracker.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Academy", "Academy")
+                    b.HasOne("BjjTracker.Models.Academy", "Academy")
                         .WithMany()
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                    b.HasOne("BjjTracker.Models.Practitioner", "Practitioner")
                         .WithMany()
                         .HasForeignKey("PractitionerId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -471,15 +471,15 @@ namespace MyMvcApp.Migrations
                     b.Navigation("Practitioner");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Attendance", b =>
+            modelBuilder.Entity("BjjTracker.Models.Attendance", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                    b.HasOne("BjjTracker.Models.Practitioner", "Practitioner")
                         .WithMany()
                         .HasForeignKey("PractitionerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
+                    b.HasOne("BjjTracker.Models.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -490,9 +490,9 @@ namespace MyMvcApp.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Practitioner", b =>
+            modelBuilder.Entity("BjjTracker.Models.Practitioner", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Academy", "Academy")
+                    b.HasOne("BjjTracker.Models.Academy", "Academy")
                         .WithMany()
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -500,15 +500,15 @@ namespace MyMvcApp.Migrations
                     b.Navigation("Academy");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.SparringSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.SparringSession", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Practitioner", "Practitioner")
+                    b.HasOne("BjjTracker.Models.Practitioner", "Practitioner")
                         .WithMany()
                         .HasForeignKey("PractitionerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyMvcApp.Models.TrainingSession", "TrainingSession")
+                    b.HasOne("BjjTracker.Models.TrainingSession", "TrainingSession")
                         .WithMany()
                         .HasForeignKey("TrainingSessionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -519,9 +519,9 @@ namespace MyMvcApp.Migrations
                     b.Navigation("TrainingSession");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.TrainingSession", b =>
+            modelBuilder.Entity("BjjTracker.Models.TrainingSession", b =>
                 {
-                    b.HasOne("MyMvcApp.Models.Academy", "Academy")
+                    b.HasOne("BjjTracker.Models.Academy", "Academy")
                         .WithMany("TrainingSessions")
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -530,7 +530,7 @@ namespace MyMvcApp.Migrations
                     b.Navigation("Academy");
                 });
 
-            modelBuilder.Entity("MyMvcApp.Models.Academy", b =>
+            modelBuilder.Entity("BjjTracker.Models.Academy", b =>
                 {
                     b.Navigation("TrainingSessions");
                 });

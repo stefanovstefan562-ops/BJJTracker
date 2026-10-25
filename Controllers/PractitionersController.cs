@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Models;
-using MyMvcApp.Services;
+using BjjTracker.Models;
+using BjjTracker.Services;
 
-namespace MyMvcApp.Controllers
+namespace BjjTracker.Controllers
 {
     [Authorize]
     public class PractitionersController : Controller

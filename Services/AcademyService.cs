@@ -1,8 +1,8 @@
-﻿using MyMvcApp.Data;
-using MyMvcApp.Models;
+﻿using BjjTracker.Data;
+using BjjTracker.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyMvcApp.Services
+namespace BjjTracker.Services
 {
     public class AcademyService : IAcademyService
     {

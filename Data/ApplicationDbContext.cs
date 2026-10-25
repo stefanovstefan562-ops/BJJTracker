@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MyMvcApp.Models;
+using BjjTracker.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace MyMvcApp.Data
+namespace BjjTracker.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

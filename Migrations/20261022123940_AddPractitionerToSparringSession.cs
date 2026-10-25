@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace MyMvcApp.Migrations
+namespace BjjTracker.Migrations
 {
     /// <inheritdoc />
     public partial class AddPractitionerToSparringSession : Migration

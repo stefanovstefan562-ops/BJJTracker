@@ -1,4 +1,4 @@
-namespace MyMvcApp.Models;
+namespace BjjTracker.Models;
 
 public class ErrorViewModel
 {

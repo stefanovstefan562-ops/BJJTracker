@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using MyMvcApp.Data;
-using MyMvcApp.Services;
-using MyMvcApp.Models;
+using BjjTracker.Data;
+using BjjTracker.Services;
+using BjjTracker.Models;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MyMvcApp.Models
+namespace BjjTracker.Models
 {
     public class ApplicationUser : IdentityUser
     {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MyMvcApp.Models;
-using MyMvcApp.Services;
+using BjjTracker.Models;
+using BjjTracker.Services;
 using System.Collections.Concurrent;
 using System.Runtime.ConstrainedExecution;
 
-namespace MyMvcApp.Controllers
+namespace BjjTracker.Controllers
 {
     [Authorize(Roles = "Practitioner")]
     public class SparringSessionsController : Controller

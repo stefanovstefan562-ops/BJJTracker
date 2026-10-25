@@ -1,6 +1,6 @@
-﻿using MyMvcApp.Models;
+﻿using BjjTracker.Models;
 
-namespace MyMvcApp.Services
+namespace BjjTracker.Services
 {
     public interface IAttendanceService
     {
