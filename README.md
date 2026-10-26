@@ -52,7 +52,7 @@ BJJ Tracker is a web application built with ASP.NET Core MVC for owners of Brazi
    git clone https://github.com/stefanovstefan562-ops/BJJTracker.git
    cd BJJTracker
    ```
-2. Create the `.env` file from the example and set your own SQL Server password in it:
+2. Create the `.env` file from the example, then open it in a text editor (for example in Notepad) and replace `YOUR_PASSWORD` with your own SQL Server password (see the requirements in the table below):
    ```
    copy .env.example .env
    ```
@@ -60,7 +60,7 @@ BJJ Tracker is a web application built with ASP.NET Core MVC for owners of Brazi
    ```
    docker compose up -d
    ```
-4. Store the connection string in user secrets (use the same password as in `.env`):
+4. Store the connection string in user secrets. Replace `YOUR_PASSWORD` with the same password that you set in `.env`:
    ```
    dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=localhost,1433;Database=BjjTrackerDb;User Id=sa;Password=YOUR_PASSWORD;TrustServerCertificate=True;"
    ```
