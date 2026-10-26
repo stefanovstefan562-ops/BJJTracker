@@ -123,7 +123,7 @@ namespace BjjTracker.Controllers
             ViewBag.UserPractitionerId = user?.PractitionerId;
 
             var practitioners = await _practitionerService.GetAllAsync();
-            return View(practitioners);
+            return View(practitioners.OrderByDescending(p => p.Id == user?.PractitionerId));
         }
     }
 }

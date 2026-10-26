@@ -1,6 +1,5 @@
 ﻿using BjjTracker.Models.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations;
 
 namespace BjjTracker.Models
 {

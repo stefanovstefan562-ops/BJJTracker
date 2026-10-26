@@ -29,11 +29,11 @@ namespace BjjTracker.Services
             IQueryable<Attendance> query = _context.Attendances
                 .Include(a => a.Practitioner)
                 .Include(a => a.TrainingSession)
-                    .ThenInclude(t => t.Academy);
+                    .ThenInclude(t => t!.Academy);
 
             if (academyId != null)
             {
-                query = query.Where(a => a.TrainingSession.AcademyId == academyId);
+                query = query.Where(a => a.TrainingSession!.AcademyId == academyId);
             }
 
             return await query.ToListAsync();
@@ -42,7 +42,7 @@ namespace BjjTracker.Services
         {
             IQueryable<Attendance> query = _context.Attendances
                 .Include(a => a.Practitioner)
-                .Include(a => a.TrainingSession).ThenInclude(t => t.Academy)
+                .Include(a => a.TrainingSession).ThenInclude(t => t!.Academy)
                 .Where(a => a.PractitionerId == practitionerId);
 
             return await query.ToListAsync();

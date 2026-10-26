@@ -21,7 +21,7 @@
 	<tbody>
 		@foreach (var practitioner in Model)
 		{
-			<tr>
+			<tr class="@(userPractitionerId == practitioner.Id ? "table-primary" : "")">
 				<td>@practitioner.FirstName</td>
 				<td>@practitioner.LastName</td>
 				<td>@practitioner.Academy?.AcademyName</td>

@@ -36,7 +36,7 @@ namespace BjjTracker.Services
             IQueryable<SparringSession> query = _context.SparringSessions
                 .Include(s => s.Practitioner)
                 .Include(s => s.TrainingSession)
-                    .ThenInclude(s => s.Academy);
+                    .ThenInclude(s => s!.Academy);
 
             query = query.Where(s => s.PractitionerId == practitionerId);
             return await query.ToListAsync();
