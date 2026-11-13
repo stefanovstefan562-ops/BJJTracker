@@ -1,0 +1,23 @@
+﻿@model List<BjjTracker.Models.TrainingSession>
+
+<div class="card mb-3">
+	<div class="card-body">
+		<h5 class="card-title">Upcoming trainings</h5>
+		@if (Model.Any())
+		{
+			<ul class="list-group list-group-flush">
+				@foreach (var trainingSession in Model)
+				{
+					<li class="list-group-item d-flex justify-content-between">
+						<span>@trainingSession.Academy?.AcademyName</span>
+						<span>@trainingSession.DateOfTheTraining, @trainingSession.StartTime, @trainingSession.TrainingType</span>
+					</li>
+				}
+			</ul>
+		}
+		else
+		{
+			<p class="text-muted mb-0">No upcoming trainings yet.</p>
+		}
+	</div>
+</div>
