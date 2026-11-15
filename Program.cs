@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using BjjTracker.Data;
-using BjjTracker.Services;
 using BjjTracker.Models;
+using BjjTracker.Repositories;
+using BjjTracker.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ITechniqueService, TechniqueService>();
 builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<ISparringSessionService, SparringSessionService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddDefaultIdentity<ApplicationUser>
     (options => { options.SignIn.RequireConfirmedAccount = false; options.User.RequireUniqueEmail = true; })
     .AddRoles<IdentityRole>()
