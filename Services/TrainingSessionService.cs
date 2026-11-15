@@ -1,44 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BjjTracker.Data;
-using BjjTracker.Models;
+﻿using BjjTracker.Models;
+using BjjTracker.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjjTracker.Services
 {
     public class TrainingSessionService : ITrainingSessionService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<TrainingSession> _repository;
 
-        public TrainingSessionService(ApplicationDbContext context)
+        public TrainingSessionService(IRepository<TrainingSession> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<TrainingSession?> GetByIdAsync(int id)
         {
-            return await _context.TrainingSessions.FindAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var trainingSession = await _context.TrainingSessions.FindAsync(id);
+            var trainingSession = await _repository.GetByIdAsync(id);
 
             if (trainingSession == null)
             {
                 return;
             }
 
-            _context.TrainingSessions.Remove(trainingSession);
-            await _context.SaveChangesAsync();
+            _repository.Delete(trainingSession);
+            await _repository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(TrainingSession trainingSession)
         {
-            _context.TrainingSessions.Update(trainingSession);
-            await _context.SaveChangesAsync();
+            _repository.Update(trainingSession);
+            await _repository.SaveChangesAsync();
         }
         public async Task<List<TrainingSession>>GetAllAsync()
         {
-            return await _context.TrainingSessions.Include(t => t.Academy).ToListAsync();
+            return await _repository.All().Include(t => t.Academy).ToListAsync();
         }
         public async Task<List<TrainingSession>> GetUpcomingAsync(int count)
         {
@@ -46,7 +46,7 @@ namespace BjjTracker.Services
             var today = DateOnly.FromDateTime(now);
             var currentTime = TimeOnly.FromDateTime(now);
 
-            return await _context.TrainingSessions
+            return await _repository.All()
                 .Include(t => t.Academy)
                 .Where(t => t.DateOfTheTraining > today
                          || (t.DateOfTheTraining == today && t.StartTime >= currentTime))
@@ -57,8 +57,8 @@ namespace BjjTracker.Services
         }
         public async Task CreateAsync(TrainingSession trainingSession)
         {
-            _context.TrainingSessions.Add(trainingSession);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(trainingSession);
+            await _repository.SaveChangesAsync();
         }
     }
 }
