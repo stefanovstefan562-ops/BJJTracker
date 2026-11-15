@@ -1,4 +1,5 @@
 ﻿using BjjTracker.Models.Enums;
+using BjjTracker.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace BjjTracker.Models
@@ -18,6 +19,7 @@ namespace BjjTracker.Models
         public string? TechniqueDescription { get; set; }
 
         [Display(Name = "Technique video")]
+        [VideoUrl]
         public string? TechniqueVideo { get; set; }
     }
 }
