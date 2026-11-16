@@ -1,32 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BjjTracker.Data;
-using BjjTracker.Models;
+﻿using BjjTracker.Models;
+using BjjTracker.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjjTracker.Services
 {
     public class AttendanceService : IAttendanceService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Attendance> _repository;
 
-        public AttendanceService(ApplicationDbContext context)
+        public AttendanceService(IRepository<Attendance> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task CreateAsync(Attendance attendance)
         {
-            _context.Attendances.Add(attendance);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(attendance);
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsAsync(int trainingSessionId, int practitionerId)
         {
-            return await _context.Attendances.AnyAsync(a => a.TrainingSessionId == trainingSessionId && a.PractitionerId == practitionerId);
+            return await _repository.All().AnyAsync(a => a.TrainingSessionId == trainingSessionId && a.PractitionerId == practitionerId);
         }
 
         public async Task<List<Attendance>> GetAllAsync(int? academyId = null)
         {
-            IQueryable<Attendance> query = _context.Attendances
+            IQueryable<Attendance> query = _repository.All()
                 .Include(a => a.Practitioner)
                 .Include(a => a.TrainingSession)
                     .ThenInclude(t => t!.Academy);
@@ -40,7 +40,7 @@ namespace BjjTracker.Services
         }
         public async Task<List<Attendance>> GetAllByPractitionerAsync(int practitionerId)
         {
-            IQueryable<Attendance> query = _context.Attendances
+            IQueryable<Attendance> query = _repository.All()
                 .Include(a => a.Practitioner)
                 .Include(a => a.TrainingSession).ThenInclude(t => t!.Academy)
                 .Where(a => a.PractitionerId == practitionerId);
