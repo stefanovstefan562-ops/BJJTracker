@@ -1,49 +1,48 @@
-﻿
+﻿using BjjTracker.Models;
+using BjjTracker.Repositories;
 using Microsoft.EntityFrameworkCore;
-using BjjTracker.Data;
-using BjjTracker.Models;
 
 namespace BjjTracker.Services
 {
     public class TechniqueService : ITechniqueService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Technique> _repository;
 
-        public TechniqueService(ApplicationDbContext context)
+        public TechniqueService(IRepository<Technique> repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public async Task<Technique?> GetByIdAsync(int id)
         {
-            return await _context.Techniques.FindAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var technique = await _context.Techniques.FindAsync(id);
+            var technique = await _repository.GetByIdAsync(id);
 
             if (technique == null)
             {
                 return;
             }
 
-            _context.Techniques.Remove(technique);
-            await _context.SaveChangesAsync();
+            _repository.Delete(technique);
+            await _repository.SaveChangesAsync();
         }
         public async Task UpdateAsync(Technique technique)
         {
-            _context.Techniques.Update(technique);
-            await _context.SaveChangesAsync();
+            _repository.Update(technique);
+            await _repository.SaveChangesAsync();
         }
         public async Task<List<Technique>> GetAllAsync()
         {
-            return await _context.Techniques.ToListAsync();
+            return await _repository.All().ToListAsync();
         }
         public async Task CreateAsync(Technique technique)
         {
-            _context.Techniques.Add(technique);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(technique);
+            await _repository.SaveChangesAsync();
         }
     }
 }
