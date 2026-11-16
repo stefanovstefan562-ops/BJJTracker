@@ -1,39 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
-using BjjTracker.Data;
+﻿using BjjTracker.Data;
 using BjjTracker.Models;
+using BjjTracker.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjjTracker.Services
 {
     public class SparringSessionService : ISparringSessionService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<SparringSession> _repository;
 
-        public SparringSessionService(ApplicationDbContext context)
+        public SparringSessionService(IRepository<SparringSession> repository)
         {
-            _context = context;
+            _repository = repository;
         }
         public async Task CreateAsync(SparringSession sparringSession)
         {
-            _context.SparringSessions.Add(sparringSession);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(sparringSession);
+            await _repository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var sparringSession = await _context.SparringSessions.FindAsync(id);
+            var sparringSession = await _repository.GetByIdAsync(id);
 
             if (sparringSession == null)
             {
                 return;
             }
 
-            _context.SparringSessions.Remove(sparringSession);
-            await _context.SaveChangesAsync();
+            _repository.Delete(sparringSession);
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<List<SparringSession>> GetAllAsync(int practitionerId)
         {
-            IQueryable<SparringSession> query = _context.SparringSessions
+            IQueryable<SparringSession> query = _repository.All()
                 .Include(s => s.Practitioner)
                 .Include(s => s.TrainingSession)
                     .ThenInclude(s => s!.Academy);
@@ -44,13 +45,13 @@ namespace BjjTracker.Services
 
         public async Task<SparringSession?> GetByIdAsync(int id)
         {
-            return await _context.SparringSessions.FindAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         public async Task UpdateAsync(SparringSession sparringSession)
         {
-            _context.SparringSessions.Update(sparringSession);
-            await _context.SaveChangesAsync();
+            _repository.Update(sparringSession);
+            await _repository.SaveChangesAsync();
         }
     }
 }
