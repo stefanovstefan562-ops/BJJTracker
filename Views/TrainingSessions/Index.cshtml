@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TrainingSession>
+﻿@model IEnumerable<TrainingSessionViewModel>
 @{
 	ViewData["Title"] = "Training Sessions";
 	var userAcademyId = (int?)ViewBag.UserAcademyId;
@@ -20,7 +20,7 @@
 		@foreach (var trainingSession in Model)
 		{
 			<tr>
-				<td>@trainingSession.Academy?.AcademyName</td>
+				<td>@trainingSession.AcademyName</td>
 				<td>@trainingSession.DateOfTheTraining</td>
 				<td><duration value="@trainingSession.DurationOfTheTraining"></duration></td>
 				<td>@trainingSession.StartTime</td>
