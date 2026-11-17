@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Practitioner>
+﻿@model IEnumerable<PractitionerViewModel>
 @{
 	ViewData["Title"] = "Practitioners";
 	var userPractitionerId = (int?)ViewBag.UserPractitionerId;
@@ -24,7 +24,7 @@
 			<tr class="@(userPractitionerId == practitioner.Id ? "table-primary" : "")">
 				<td>@practitioner.FirstName</td>
 				<td>@practitioner.LastName</td>
-				<td>@practitioner.Academy?.AcademyName</td>
+				<td>@practitioner.AcademyName</td>
 				<td>@practitioner.CurrentBelt</td>
 				<td>
 					@if (User.IsInRole("Practitioner") && userPractitionerId == practitioner.Id)
