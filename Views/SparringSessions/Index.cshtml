@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SparringSession>
+﻿@model IEnumerable<SparringSessionViewModel>
 @{
 	ViewData["Title"] = "Sparring Sessions";
 }
@@ -19,7 +19,7 @@
 		@foreach (var sparringSession in Model)
 		{
 			<tr>
-				<td>@sparringSession.TrainingSession?.DateOfTheTraining</td>
+				<td>@sparringSession.TrainingDate</td>
 				<td>@sparringSession.SparringPrtnerName</td>
 				<td>@sparringSession.SparringParatnerBelt</td>
 				<td>@sparringSession.SparringPartnerAcademy</td>
