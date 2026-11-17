@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BjjTracker.Models;
 using BjjTracker.Services;
+using BjjTracker.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BjjTracker.Controllers
 {
@@ -18,14 +20,17 @@ namespace BjjTracker.Controllers
         private readonly IAcademyService _academyService;
 
         private readonly UserManager<ApplicationUser> _userManager;
+
+        private readonly IMapper _mapper;
         public AttendancesController(IAttendanceService attendanceService, ITrainingSessionService trainingSessionService,
-            IPractitionerService practitionerService, IAcademyService academyService, UserManager<ApplicationUser> userManager)
+            IPractitionerService practitionerService, IAcademyService academyService, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _attendanceService = attendanceService;
             _trainingSessionService = trainingSessionService;
             _practitionerService = practitionerService;
             _academyService = academyService;
             _userManager = userManager;
+            _mapper = mapper;
         }
         [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(int trainingSessionId)
@@ -45,13 +50,13 @@ namespace BjjTracker.Controllers
             {
                 return RedirectToAction("Create", "Practitioners");
             }
-            var attendance = new Attendance { TrainingSessionId = trainingSessionId };
+            var model = new AttendanceViewModel { TrainingSessionId = trainingSessionId };
 
-            return View(attendance);
+            return View(model);
         }
         [HttpPost]
         [Authorize(Roles = "Practitioner")]
-        public async Task<IActionResult> Create(Attendance attendance)
+        public async Task<IActionResult> Create(AttendanceViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -63,18 +68,20 @@ namespace BjjTracker.Controllers
                 return RedirectToAction("Create", "Practitioners");
             }
 
-            attendance.PractitionerId = user.PractitionerId.Value;
+            model.PractitionerId = user.PractitionerId.Value;
 
-            if (await _attendanceService.ExistsAsync(attendance.TrainingSessionId, attendance.PractitionerId))
+            if (await _attendanceService.ExistsAsync(model.TrainingSessionId, model.PractitionerId))
             {
                 ModelState.AddModelError(string.Empty, "You are already registered for this training session.");
             }
             if (!ModelState.IsValid)
             {
-                return View(attendance);
+                return View(model);
             }
+            var attendance = _mapper.Map<Attendance>(model);
 
             await _attendanceService.CreateAsync(attendance);
+
             return RedirectToAction("Index");
         }
 
@@ -92,7 +99,8 @@ namespace BjjTracker.Controllers
                     return RedirectToAction("Create", "Practitioners");
                 }
                 var ownAttendances = await _attendanceService.GetAllByPractitionerAsync(user.PractitionerId.Value);
-                return View(ownAttendances);
+
+                return View(_mapper.Map<List<AttendanceViewModel>>(ownAttendances));
             }
             if (User.IsInRole("Academy"))
             {
@@ -112,7 +120,8 @@ namespace BjjTracker.Controllers
                 ViewBag.AcademyName = academy.AcademyName;
             }
             var attendances = await _attendanceService.GetAllAsync(academyId);
-            return View(attendances);
+
+            return View(_mapper.Map<List<AttendanceViewModel>>(attendances));
         }
     }
 }

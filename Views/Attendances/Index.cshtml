@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Attendance>
+﻿@model IEnumerable<AttendanceViewModel>
 @{
     ViewData["Title"] = "Attendances";
 }
@@ -27,12 +27,12 @@ else
         @foreach (var attendance in Model)
         {
             <tr>
-                <td>@attendance.TrainingSession?.Academy?.AcademyName</td>
-                <td>@attendance.Practitioner?.FirstName @attendance.Practitioner?.LastName</td>
-                <td>@attendance.TrainingSession?.DateOfTheTraining</td>
-                <td>@attendance.TrainingSession?.StartTime</td>
-                <td>@attendance.TrainingSession?.DurationOfTheTraining</td>
-                <td>@attendance.TrainingSession?.TrainingType</td>
+                <td>@attendance.AcademyName</td>
+                <td>@attendance.PractitionerName</td>
+                <td>@attendance.DateOfTheTraining</td>
+                <td>@attendance.StartTime</td>
+                <td>@attendance.DurationOfTheTraining</td>
+                <td>@attendance.TrainingType</td>
             </tr>
         }
     </tbody>
