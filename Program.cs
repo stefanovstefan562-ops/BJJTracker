@@ -20,6 +20,7 @@ builder.Services.AddScoped<ITrainingSessionService, TrainingSessionService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<ISparringSessionService, SparringSessionService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program))); 
 builder.Services.AddDefaultIdentity<ApplicationUser>
     (options => { options.SignIn.RequireConfirmedAccount = false; options.User.RequireUniqueEmail = true; })
     .AddRoles<IdentityRole>()

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BjjTracker.Models;
 using BjjTracker.Services;
+using BjjTracker.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BjjTracker.Controllers
 {
@@ -12,10 +14,14 @@ namespace BjjTracker.Controllers
         private readonly IAcademyService _academyService;
 
         private readonly UserManager<ApplicationUser> _userManager;
-        public AcademiesController(IAcademyService academyService, UserManager<ApplicationUser> userManager)
+        
+        private readonly IMapper _mapper;
+
+        public AcademiesController(IAcademyService academyService, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _academyService = academyService;
             _userManager = userManager;
+            _mapper = mapper;
         }
         [Authorize(Roles = "Academy")]
         public IActionResult Create()
@@ -24,11 +30,11 @@ namespace BjjTracker.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Academy")]
-        public async Task<IActionResult> Create(Academy academy)
+        public async Task<IActionResult> Create(AcademyViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(academy);
+                return View(model);
             }
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -39,6 +45,8 @@ namespace BjjTracker.Controllers
             {
                 return RedirectToAction("Index");
             }
+
+            var academy = _mapper.Map<Academy>(model);
             await _academyService.CreateAsync(academy);
 
             user.AcademyId = academy.Id;
@@ -63,26 +71,27 @@ namespace BjjTracker.Controllers
             {
                 return NotFound();
             }
-            return View(academy);
+            return View(_mapper.Map<AcademyViewModel>(academy));
         }
         [HttpPost]
         [Authorize(Roles = "Academy")]
-        public async Task<IActionResult> Edit(Academy academy)
+        public async Task<IActionResult> Edit(AcademyViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Challenge();
             }
-            if (user.AcademyId != academy.Id)
+            if (user.AcademyId != model.Id)
             {
                 return Forbid();
             }
             if (!ModelState.IsValid)
             {
-                return View(academy);
+                return View(model);
             }
 
+            var academy = _mapper.Map<Academy>(model);
             await _academyService.UpdateAsync(academy);
 
             return RedirectToAction("Index");
@@ -111,7 +120,8 @@ namespace BjjTracker.Controllers
             ViewBag.UserAcademyId = user?.AcademyId;
 
             var academies = await _academyService.GetAllAsync();
-            return View(academies);
+
+            return View(_mapper.Map<List<AcademyViewModel>>(academies));
         }
     }
 }
