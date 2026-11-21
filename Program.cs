@@ -45,6 +45,10 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
@@ -55,7 +59,7 @@ using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    foreach (var roleName in new[] { "Academy", "Practitioner" })
+    foreach (var roleName in new[] { "Academy", "Practitioner", "Administrator" })
     {
         if (!await roleManager.RoleExistsAsync(roleName))
         {
@@ -64,6 +68,22 @@ using (var scope = app.Services.CreateScope())
     }
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     await DbSeeder.SeedAsync(context);
+
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var adminEmail = builder.Configuration["Admin:Email"];
+    var adminPassword = builder.Configuration["Admin:Password"];
+
+    if (!string.IsNullOrEmpty(adminEmail) && !string.IsNullOrEmpty(adminPassword)
+        && await userManager.FindByEmailAsync(adminEmail) == null)
+    {
+        var admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail };
+        var result = await userManager.CreateAsync(admin, adminPassword);
+
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(admin, "Administrator");
+        }
+    }
 }
 
 app.Run();

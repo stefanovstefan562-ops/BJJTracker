@@ -1,0 +1,56 @@
+﻿@model AdminDashboardViewModel
+@{
+	ViewData["Title"] = "Admin Dashboard";
+}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row g-3">
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Academies</h5>
+				<p class="display-6">@Model.AcademiesCount</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Practitioners</h5>
+				<p class="display-6">@Model.PractitionersCount</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Techniques</h5>
+				<p class="display-6">@Model.TechniquesCount</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Training Sessions</h5>
+				<p class="display-6">@Model.TrainingSessionsCount</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Attendances</h5>
+				<p class="display-6">@Model.AttendancesCount</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="card text-center">
+			<div class="card-body">
+				<h5 class="card-title">Sparring Sessions</h5>
+				<p class="display-6">@Model.SparringSessionsCount</p>
+			</div>
+		</div>
+	</div>
+</div>
