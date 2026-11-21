@@ -20,37 +20,37 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Academies" asp-action="Index">Academies</a>
                             </li>
                         }
-                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Practitioners" asp-action="Index">Practitioners</a>
                             </li>
                         }
-                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="TrainingSessions" asp-action="Index">Training Sessions</a>
                             </li>
                         }
-                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Techniques" asp-action="Index">Techniques</a>
                             </li>
                         }
-                        @if (User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="SparringSessions" asp-action="Index">Sparring Sessions</a>
                             </li>
                         }
-                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner"))
+                        @if (User.IsInRole("Academy") || User.IsInRole("Practitioner") || User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Attendances" asp-action="Index">Attendances</a>

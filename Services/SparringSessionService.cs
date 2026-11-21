@@ -32,14 +32,18 @@ namespace BjjTracker.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<List<SparringSession>> GetAllAsync(int practitionerId)
+        public async Task<List<SparringSession>> GetAllAsync(int? practitionerId)
         {
             IQueryable<SparringSession> query = _repository.All()
                 .Include(s => s.Practitioner)
                 .Include(s => s.TrainingSession)
                     .ThenInclude(s => s!.Academy);
 
-            query = query.Where(s => s.PractitionerId == practitionerId);
+            if (practitionerId != null)
+            {
+                query = query.Where(s => s.PractitionerId == practitionerId);
+            }
+
             return await query.ToListAsync();
         }
 

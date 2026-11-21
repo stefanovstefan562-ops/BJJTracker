@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BjjTracker.Controllers
 {
-    [Authorize(Roles = "Practitioner")]
+    [Authorize(Roles = "Practitioner,Administrator")]
     public class SparringSessionsController : Controller
     {
         private readonly ISparringSessionService _sparringSessionService;
@@ -30,6 +30,7 @@ namespace BjjTracker.Controllers
             _userManager = userManager;
             _mapper = mapper;
         }
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -51,6 +52,7 @@ namespace BjjTracker.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Create(SparringSessionViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -79,6 +81,7 @@ namespace BjjTracker.Controllers
             await _sparringSessionService.CreateAsync(sparringSession);
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Edit(int id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -106,6 +109,7 @@ namespace BjjTracker.Controllers
             return View(_mapper.Map<SparringSessionViewModel>(existing));
         }
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Edit(SparringSessionViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -147,6 +151,7 @@ namespace BjjTracker.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [Authorize(Roles = "Practitioner")]
         public async Task<IActionResult> Delete(int id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -179,7 +184,12 @@ namespace BjjTracker.Controllers
             {
                 return Challenge();
             }
-            if (user.PractitionerId == null)
+            if (User.IsInRole("Administrator"))
+            {
+                var all = await _sparringSessionService.GetAllAsync(null);
+                return View(_mapper.Map<List<SparringSessionViewModel>>(all));
+            }
+                if (user.PractitionerId == null)
             {
                 return RedirectToAction("Create", "Practitioners");
             }
