@@ -11,5 +11,6 @@ namespace BjjTracker.Services
         Task CreateAsync(TrainingSession trainingSession);
         Task UpdateAsync(TrainingSession trainingSession);
         Task DeleteAsync(int id);
+        Task<(List<TrainingSession> Items, int TotalCount)> GetPagedAsync(string? search, int page, int pageSize);
     }
 }

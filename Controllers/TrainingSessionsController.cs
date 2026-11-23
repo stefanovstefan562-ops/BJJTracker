@@ -154,7 +154,7 @@ namespace BjjTracker.Controllers
             return RedirectToAction("Index");
         }
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -162,9 +162,23 @@ namespace BjjTracker.Controllers
             {
                 return Challenge();
             }
-            var trainingSessions = await _trainingSessionService.GetAllAsync();
+            const int pageSize = 5;
+            if (page < 1)
+            {
+                page = 1;
+            }
+            var (items, totalCount) = await _trainingSessionService.GetPagedAsync(search, page, pageSize);
+
+            var model = new PagedResult<TrainingSessionViewModel>
+            {
+                Items = _mapper.Map<List<TrainingSessionViewModel>>(items),
+                Page = page,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                Search = search
+            };
             ViewBag.UserAcademyId = user.AcademyId;
-            return View(_mapper.Map<List<TrainingSessionViewModel>>(trainingSessions));
+
+            return View(model);
         }
         private void ValidateTrainingDateTime(TrainingSessionViewModel model)
         {
