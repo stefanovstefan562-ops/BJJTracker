@@ -44,5 +44,24 @@ namespace BjjTracker.Services
             await _repository.AddAsync(technique);
             await _repository.SaveChangesAsync();
         }
+        public async Task<(List<Technique> Items, int TotalCount)> GetPagedAsync(string? search, int page, int pageSize)
+        {
+            var query = _repository.All();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(t => t.TechniqueName.Contains(search));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderBy(t => t.TechniqueName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
     }
 }

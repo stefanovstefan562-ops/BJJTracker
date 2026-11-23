@@ -78,10 +78,26 @@ namespace BjjTracker.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
-            var techniques = await _techniqueService.GetAllAsync();
-            return View(_mapper.Map<List<TechniqueViewModel>>(techniques));
+            const int pageSize = 5;
+
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            var (items, totalCount) = await _techniqueService.GetPagedAsync(search, page, pageSize);
+
+            var model = new PagedResult<TechniqueViewModel>
+            {
+                Items = _mapper.Map<List<TechniqueViewModel>>(items),
+                Page = page,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                Search = search
+            };
+
+            return View(model);
         }
     }
 }
