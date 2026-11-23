@@ -66,7 +66,7 @@ namespace BjjTracker.Services
 
             if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(t => t.Academy.AcademyName.Contains(search));
+                query = query.Where(t => t.Academy != null && t.Academy.AcademyName.Contains(search));
             }
 
             var totalCount = await query.CountAsync();

@@ -18,5 +18,9 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.12" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<Compile Remove="BjjTracker.Tests\**" />
+		<EmbeddedResource Remove="BjjTracker.Tests\**" />
+		<None Remove="BjjTracker.Tests\**" />
+	</ItemGroup>
 </Project>
