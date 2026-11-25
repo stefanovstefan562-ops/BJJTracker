@@ -123,5 +123,40 @@ namespace BjjTracker.Tests
             // Assert
             Assert.Equal(2, result.Count);
         }
+        [Fact]
+        public async Task GetPagedAsync_WithSearch_ReturnsOnlyMatchingTechniques()
+        {
+            // Arrange
+            using var context = CreateContext();
+            context.Techniques.AddRange(
+                new Technique { TechniqueName = "Armbar", TechniquePosition = TechniquePosition.ClosedGuard },
+                new Technique { TechniqueName = "Triangle", TechniquePosition = TechniquePosition.ClosedGuard },
+                new Technique { TechniqueName = "Kimura", TechniquePosition = TechniquePosition.ClosedGuard });
+            await context.SaveChangesAsync();
+            var service = new TechniqueService(new Repository<Technique>(context));
+            // Act
+            var (items, totalCount) = await service.GetPagedAsync("Arm", 1, 10);
+            // Assert
+            Assert.Single(items);
+            Assert.Equal(1, totalCount);
+        }
+        [Fact]
+        public async Task GetPagedAsync_ReturnsRequestedPage()
+        {
+            //Arrange
+            using var context = CreateContext();
+            context.Techniques.AddRange(
+                new Technique { TechniqueName = "Armbar", TechniquePosition = TechniquePosition.ClosedGuard },
+                new Technique { TechniqueName = "Triangle", TechniquePosition = TechniquePosition.ClosedGuard },
+                new Technique { TechniqueName = "Kimura", TechniquePosition = TechniquePosition.ClosedGuard });
+            await context.SaveChangesAsync();
+            var service = new TechniqueService(new Repository<Technique>(context));
+            // Act
+            var (items, totalCount) = await service.GetPagedAsync(null, 2, 2);
+            // Assert
+            Assert.Single(items);
+            Assert.Equal(3, totalCount);
+            Assert.Equal("Triangle", items[0].TechniqueName);
+        }
     }
 }
