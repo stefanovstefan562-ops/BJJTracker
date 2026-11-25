@@ -20,6 +20,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="BjjTracker.Tests\**" />
+		<Content Remove="BjjTracker.Tests\**" />
 		<EmbeddedResource Remove="BjjTracker.Tests\**" />
 		<None Remove="BjjTracker.Tests\**" />
 	</ItemGroup>
