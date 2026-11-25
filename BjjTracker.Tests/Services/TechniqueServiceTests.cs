@@ -4,6 +4,8 @@ using BjjTracker.Repositories;
 using BjjTracker.Services;
 using Moq;
 using Xunit;
+using BjjTracker.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BjjTracker.Tests
 {
@@ -95,6 +97,31 @@ namespace BjjTracker.Tests
             // Assert
             mockRepository.Verify(r => r.Update(technique), Times.Once);
             mockRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
+        private static ApplicationDbContext CreateContext()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            return new ApplicationDbContext(options);
+        }
+        [Fact]
+        public async Task GetAllAsync_ReturnsAllTechniques()
+        {
+            // Arrange
+            using var context = CreateContext();
+            context.Techniques.AddRange(
+                new Technique { TechniqueName = "Armbar", TechniquePosition = TechniquePosition.ClosedGuard },
+                new Technique { TechniqueName = "Triangle", TechniquePosition = TechniquePosition.ClosedGuard });
+            await context.SaveChangesAsync();
+            var service = new TechniqueService(new Repository<Technique>(context));
+
+            // Act
+            var result = await service.GetAllAsync();
+
+            // Assert
+            Assert.Equal(2, result.Count);
         }
     }
 }
