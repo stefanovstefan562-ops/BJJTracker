@@ -60,5 +60,41 @@ namespace BjjTracker.Tests
             mockRepository.Verify(r => r.Delete(It.IsAny<Technique>()), Times.Never);
             mockRepository.Verify(r => r.SaveChangesAsync(), Times.Never);
         }
+        [Fact]
+        public async Task CreateAsync_AddsTechniqueAndSaves()
+        {
+            // Arrange
+            var technique = new Technique
+            {
+                Id = 1,
+                TechniqueName = "Armbar",
+                TechniquePosition = TechniquePosition.ClosedGuard
+            };
+            var mockRepository = new Mock<IRepository<Technique>>();
+            var service = new TechniqueService(mockRepository.Object);
+            // Act
+            await service.CreateAsync(technique);
+            // Assert
+            mockRepository.Verify(r => r.AddAsync(technique), Times.Once);
+            mockRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
+        [Fact]
+        public async Task UpdateAsync_UpdatesTechniqueAndSaves()
+        {
+            // Arrange
+            var technique = new Technique
+            {
+                Id = 1,
+                TechniqueName = "Armbar",
+                TechniquePosition = TechniquePosition.ClosedGuard
+            };
+            var mockRepository = new Mock<IRepository<Technique>>();
+            var service = new TechniqueService(mockRepository.Object);
+            // Act
+            await service.UpdateAsync(technique);
+            // Assert
+            mockRepository.Verify(r => r.Update(technique), Times.Once);
+            mockRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
     }
 }
