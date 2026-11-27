@@ -1,7 +1,9 @@
-﻿using BjjTracker.Models;
+﻿using BjjTracker.Data;
+using BjjTracker.Models;
 using BjjTracker.Models.Enums;
 using BjjTracker.Repositories;
 using BjjTracker.Services;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
@@ -95,6 +97,37 @@ namespace BjjTracker.Tests
             // Assert
             mockRepository.Verify(r => r.Update(trainingSession), Times.Once);
             mockRepository.Verify(r => r.SaveChangesAsync(), Times.Once);
+        }
+        [Fact]
+        public async Task GetAllAsync_ReturnsAllTrainingSession()
+        {
+            // Arrange
+            using var context = TestDbContextFactory.Create();
+            context.TrainingSessions.AddRange(
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 10), Academy = new Academy { AcademyName = "First Testing BJJ Club" } },
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 11), Academy = new Academy { AcademyName = "Second Testing BJJ Club" } });
+            await context.SaveChangesAsync();
+            var service = new TrainingSessionService(new Repository<TrainingSession>(context));
+            // Act
+            var result = await service.GetAllAsync();
+            // Assert
+            Assert.Equal(2, result.Count);
+        }
+        [Fact]
+        public async Task GetPagedAsync_WithSearch_ReturnsOnlyMatchingTrainingSession()
+        {
+            // Arrange
+            using var context = TestDbContextFactory.Create();
+            context.TrainingSessions.AddRange(
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 10), Academy = new Academy { AcademyName = "First Testing BJJ Club" } },
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 11), Academy = new Academy { AcademyName = "Second Testing BJJ Club" } });
+            await context.SaveChangesAsync();
+            var service = new TrainingSessionService(new Repository<TrainingSession>(context));
+            // Act
+            var (items, totalCount) = await service.GetPagedAsync("First", 1, 10);
+            // Assert
+            Assert.Single(items);
+            Assert.Equal(1, totalCount);
         }
     }
 }
