@@ -129,5 +129,22 @@ namespace BjjTracker.Tests
             Assert.Single(items);
             Assert.Equal(1, totalCount);
         }
+                [Fact]
+        public async Task GetPagedAsync_ReturnsRequestedPage()
+        {
+            // Arrange
+            using var context = TestDbContextFactory.Create();
+            context.TrainingSessions.AddRange(
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 10), Academy = new Academy { AcademyName = "First Testing BJJ Club" } },
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 11), Academy = new Academy { AcademyName = "Second Testing BJJ Club" } },
+                new TrainingSession { DateOfTheTraining = new DateOnly(2027, 10, 12), Academy = new Academy { AcademyName = "Third Testing BJJ Club" } });
+            await context.SaveChangesAsync();
+            var service = new TrainingSessionService(new Repository<TrainingSession>(context));
+            // Act
+            var (items, totalCount) = await service.GetPagedAsync(null, 2, 2);
+            // Assert
+            Assert.Single(items);
+            Assert.Equal(3, totalCount);
+        }
     }
 }
