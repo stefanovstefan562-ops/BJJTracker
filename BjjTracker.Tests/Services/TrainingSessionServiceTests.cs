@@ -1,11 +1,8 @@
-﻿using BjjTracker.Data;
-using BjjTracker.Models;
+﻿using BjjTracker.Models;
 using BjjTracker.Models.Enums;
 using BjjTracker.Repositories;
 using BjjTracker.Services;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using Xunit;
 
 namespace BjjTracker.Tests
 {
@@ -129,7 +126,7 @@ namespace BjjTracker.Tests
             Assert.Single(items);
             Assert.Equal(1, totalCount);
         }
-                [Fact]
+        [Fact]
         public async Task GetPagedAsync_ReturnsRequestedPage()
         {
             // Arrange
@@ -145,6 +142,23 @@ namespace BjjTracker.Tests
             // Assert
             Assert.Single(items);
             Assert.Equal(3, totalCount);
+        }
+        [Fact]
+        public async Task GetUpcomingAsync_ReturnsOnlyFutureSessionsOrderedByDate()
+        {
+            // Arrange
+            using var context = TestDbContextFactory.Create();
+            context.TrainingSessions.AddRange(
+                new TrainingSession { DateOfTheTraining = DateOnly.FromDateTime(DateTime.Today.AddDays(-5)), Academy = new Academy { AcademyName = "Test Club" } },
+                new TrainingSession { DateOfTheTraining = DateOnly.FromDateTime(DateTime.Today.AddDays(10)), Academy = new Academy { AcademyName = "Test Club" } },
+                new TrainingSession { DateOfTheTraining = DateOnly.FromDateTime(DateTime.Today.AddDays(3)), Academy = new Academy { AcademyName = "Test Club" } });
+            await context.SaveChangesAsync();
+            var service = new TrainingSessionService(new Repository<TrainingSession>(context));
+            // Act
+            var result = await service.GetUpcomingAsync(5);
+            // Assert
+            Assert.Equal(2, result.Count);
+            Assert.Equal(DateOnly.FromDateTime(DateTime.Today.AddDays(3)), result[0].DateOfTheTraining);
         }
     }
 }
